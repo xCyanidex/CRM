@@ -44,13 +44,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function roles()
+    public function productOwner()
     {
-        return $this->belongsToMany(Role::class);
-    }
-
-    public function permissions()
-    {
-        return $this->getAllPermissions();
+        return $this->hasOne(ProductOwner::class);
     }
 }
