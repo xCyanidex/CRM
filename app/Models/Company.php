@@ -12,12 +12,16 @@ class Company extends Model
         'company_name',
         'business_type',
         'industry',
-        'reg_number',
+        'registration_number',
         'website',
         'logo',
+        'user_id',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function employee(){
+        return $this->hasMany(Employees::class);
     }
 }
