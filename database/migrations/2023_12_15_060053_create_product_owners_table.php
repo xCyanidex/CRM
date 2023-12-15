@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('product_owners', function (Blueprint $table) {
             $table->id();
-            $table->unisgnedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id')->unique();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+       
     }
 
     /**
