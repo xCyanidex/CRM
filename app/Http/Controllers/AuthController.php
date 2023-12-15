@@ -93,7 +93,7 @@ class AuthController extends Controller
                 'company_name' => 'required|string',
                 'business_type' => 'required|string',
                 'industry' => 'required|string',
-                'reg_number' => 'required|string',
+                'registration_number' => 'required',
                 'website' => 'nullable|url',
                 'logo' => 'nullable|string',
             ]);
@@ -106,11 +106,13 @@ class AuthController extends Controller
                 'company_name' => $request->input('company_name'),
                 'business_type' => $request->input('business_type'),
                 'industry' => $request->input('industry'),
-                'reg_number' => $request->input('reg_number'),
+                'registration_number' => $request->input('registration_number'),
                 'website' => $request->input('website'),
                 'logo' => $request->input('logo'),
-                'user_id' => $user->id,
+                
             ]);
+
+            
         
             return response()->json(['message' => 'Company registered successfully', 'company' => $company], 201);
         }
