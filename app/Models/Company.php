@@ -12,7 +12,7 @@ class Company extends Model
         'company_name',
         'business_type',
         'industry',
-        'reg_number',
+        'registration_number',
         'website',
         'logo',
     ];
