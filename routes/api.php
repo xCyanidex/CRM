@@ -56,15 +56,8 @@ Route::get('/get-all-product-owners', [ProductOwnerController::class, 'index']);
 Route::get('/get-product-owner/{id}', [ProductOwnerController::class, 'show']);
 Route::put('/update-product-owner/{id}', [ProductOwnerController::class, 'update']);
 Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
-Route::get('/users', [AuthController::class, 'getAllUsers']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/register/company', [AuthController::class, 'registerCompany']);
-Route::get('/get-all-users', [UserController::class, 'index']);
-Route::get('/get-user/{id}', [UserController::class, 'show']);
-Route::put('/update-user/{id}', [UserController::class, 'update']);
-Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
 
-// employye CRUD
+// employee CRUD
 Route::prefix('employees')->group(function () {
     Route::get('/get-all', [EmployeeController::class, 'index']);
     Route::post('/create', [EmployeeController::class, 'store']);
