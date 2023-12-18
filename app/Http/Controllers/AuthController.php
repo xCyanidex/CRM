@@ -131,11 +131,11 @@ class AuthController extends Controller
                 
             ]);
 
-           if (!Auth::user()) {
+           if (!$user = Auth::user()) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
             
-            $user = Auth::user();
+            // $user = Auth::user();
 
             $freelancer = Freelancers::create([
                 'freelancer_name'=>$request->input('freelancer_name'),
