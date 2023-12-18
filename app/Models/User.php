@@ -49,7 +49,7 @@ class User extends Authenticatable
         return $this->hasOne(ProductOwner::class);
     }
     public function company(){
-        return $this->hasMany(Company::class);
+        return $this->hasOne(Company::class);
     }
     public function employee(){
         return $this->hasOne(Employees::class);
