@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Freelancers;
 
 class AuthController extends Controller
 {
@@ -103,10 +104,8 @@ class AuthController extends Controller
             if (!$user = Auth::user()) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
-            $user = Auth::user();
 
-            
-           
+            $user = Auth::user(); 
         
             // Create and associate the company with the authenticated user
             $company = Company::create([
@@ -120,13 +119,32 @@ class AuthController extends Controller
                
                 
             ]);
-
-            
         
             return response()->json(['message' => 'Company registered successfully', 'company' => $company], 201);
         }
 
+        public function registerFreelancer(Request $request)
+        {
+            $request->validate([
+                'freelancer_name'=>'string|required',
+                'industry'=>'string|required'
+                
+            ]);
 
+           if (!Auth::user()) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            
+            $user = Auth::user();
+
+            $freelancer = Freelancers::create([
+                'freelancer_name'=>$request->input('freelancer_name'),
+                'industry'=>$request->input('industry'),
+                'user_id'=>$user->id
+            ]);
+
+            return response()->json(['message'=>'Freelancer Created Successfully']);
+        } 
       
           
 }
