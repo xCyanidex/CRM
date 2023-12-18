@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\freelancerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,10 @@ Route::get('/get-all-users', [UserController::class, 'index']);
 Route::get('/get-user/{id}', [UserController::class, 'show']);
 Route::put('/update-user/{id}', [UserController::class, 'update']);
 Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
+
+
+Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
+Route::get('/get-freelancer/{id}', [freelancerController::class, 'show']);
+Route::put('/update-freelancer/{id}', [freelancerController::class, 'update']);
+Route::delete('/delete-freelancer/{id}', [freelancerController::class, 'destroy']);
+
