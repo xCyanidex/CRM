@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\freelancerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +43,9 @@ Route::middleware('auth:sanctum')->post('/register/company', [AuthController::cl
 Route::get('/companies', [CompanyController::class, 'getAllCompanies']);
 Route::put('/company/{id}', [CompanyController::class, 'updateCompany']);
 Route::delete('/company/{id}', [CompanyController::class, 'deleteCompany']);
+
+Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
+Route::get('/get-freelancer/{id}', [freelancerController::class, 'show']);
+Route::put('/update-freelancer/{id}', [freelancerController::class, 'update']);
+Route::delete('/delete-freelancer/{id}', [freelancerController::class, 'destroy']);
+
