@@ -6,13 +6,13 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index()
+    public function getAllUsers()
     {
         $users = User::all();
         return response()->json(['users' => $users], 200);
     }
 
-    public function store(Request $request)
+    public function createUser(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -29,7 +29,7 @@ class UserController extends Controller
         return response()->json(['user' => $user, 'message' => 'User Created Successfully!'], 201);
     }
 
-    public function show($id)
+    public function getUser($id)
     {
         $user = User::find($id);
 
@@ -40,7 +40,7 @@ class UserController extends Controller
         return response()->json(['user' => $user], 200);
     }
 
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $user->update($request->all());
@@ -48,7 +48,7 @@ class UserController extends Controller
         return response()->json(['message' => 'User Updated Successfully!'], 200);
     }
 
-    public function destroy(Request $request, $id)
+    public function deleteUser(Request $request, $id)
     {
         $user = User::find($id);
 
