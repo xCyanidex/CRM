@@ -15,39 +15,23 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+       // Create a user
+       $user = User::create([
+        'name' => 'ahmad',
+        'email' => 'ahmad@example.com',
+        'password' => Hash::make('password'),
+      
+    ]);
 
-        $product_ownerRole = Role::create(["name" => 'product_owner', 'guard_name'=>'api']);
-        $clientRole = Role::create(["name" => 'client', 'guard_name'=>'api']);
-        $employeeRole = Role::create(["name" => 'employee', 'guard_name'=>'api']);
+    $role = Role::where('name', 'client')->first();
+ 
 
-        $viewClientPermission = Permission::create(['name' => 'view clients', 'guard_name'=>'api']);
-        $viewEmployeePermission = Permission::create(['name' => 'view employees', 'guard_name'=>'api']);
-        $viewResourcePermission = Permission::create(['name' => 'view resource', 'guard_name'=>'api']);
+    $permission = Permission::where('name','view-employee')->first();
+    $role->givePermissionTo($permission);
+    $user->assignRole($role);
+    
 
-        $product_ownerRole->givePermissionTo($viewClientPermission);
-        $clientRole->givePermissionTo($viewEmployeePermission);
-        $employeeRole->givePermissionTo($viewResourcePermission);
-
-        DB::table('users')->insert([
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'password' => bcrypt('password'),
-        ]);
-        // $user->assignRole('product_owner');
-        // $user->givePermissionTo('view clients');
-
-        // DB::table('roles')->insert([
-        //     'name' => 'client',
-        //     'guard_name' => 'api',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-
-        // DB::table('roles')->insert([
-        //     'name' => 'employee',
-        //     'guard_name' => 'api',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+  
+   
     }
 }
