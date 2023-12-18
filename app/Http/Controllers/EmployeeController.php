@@ -25,17 +25,21 @@ class EmployeeController extends Controller
     {
 
         $user = Auth::user();
-        $user_id = $user->user_id;
-        $company_id = Company::Where('user_id', $user_id);
+        $user_id = $user->id;
+        $company_id = Company::where('user_id', $user_id)->value('id');
+
+        if (!$company_id) {
+            return response()->json(['error' => 'Company ID not found for the user'], 400);
+        }
 
 
         $request->validate([
             'employee_name' => 'required|string',
-            'phone_number' => 'required|unique:employees,phone_number|email',
+            'phone_number' => 'required',
             'dob' => 'required|date',
             'gender' => 'required|in:male,female,other',
-            'user_id' => 'required|integer',
-            'company_id' => 'required|integer',
+            // 'user_id' => 'required|integer',
+            // 'company_id' => 'required|integer',
         ]);
 
         $employees = Employees::create([

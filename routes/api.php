@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/users', [AuthController::class,'getAllUsers']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class,'logout']);
 Route::middleware('auth:sanctum')->post('/register/company', [AuthController::class, 'registerCompany']);
 Route::middleware('auth:sanctum')->post('/register/freelancer', [AuthController::class, 'registerFreelancer']);
 
@@ -60,7 +61,7 @@ Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'des
 // employee CRUD
 Route::prefix('employees')->group(function () {
     Route::get('/get-all', [EmployeeController::class, 'index']);
-    Route::post('/create', [EmployeeController::class, 'store']);
+    Route::middleware('auth:sanctum')->post('/create', [EmployeeController::class, 'store']);
     Route::post('/update/{id}', [EmployeeController::class, 'update']);
     Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
     Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
