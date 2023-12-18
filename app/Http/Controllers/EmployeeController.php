@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employees;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
@@ -24,6 +25,9 @@ class EmployeeController extends Controller
     {
 
         $user = Auth::user();
+        $user_id = $user->user_id;
+        $company_id = Company::Where('user_id', $user_id);
+
 
         $request->validate([
             'employee_name' => 'required|string',
@@ -39,8 +43,8 @@ class EmployeeController extends Controller
             'phone_number' => $request->phone_number,
             'dob' => $request->dob,
             'gender' => $request->gender,
-            'user_id' => $user->user_id,
-            'company_id' => $user->id,
+            'user_id' => $user_id,
+            'company_id' => $company_id,
         ]);
 
         return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
