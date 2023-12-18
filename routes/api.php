@@ -38,7 +38,6 @@ Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
 Route::put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
 Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
 
-Route::middleware('auth:sanctum')->post('/register/freelancer', [AuthController::class, 'registerFreelancer']);
 // Routes for Freelancer Management
 Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
 Route::get('/get-freelancer/{id}', [freelancerController::class, 'show']);
