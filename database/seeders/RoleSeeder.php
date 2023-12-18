@@ -22,11 +22,11 @@ class RoleSeeder extends Seeder
             'guard_name'=>'api'
         ]);
         DB::table('roles')->insert([
-            'name'=>'client',
+            'name'=>'company',
             'guard_name'=>'api'
         ]);
         DB::table('roles')->insert([
-            'name'=>'admin',
+            'name'=>'freelancers',
             'guard_name'=>'api'
         ]);
     }

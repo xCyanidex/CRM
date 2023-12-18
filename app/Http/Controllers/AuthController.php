@@ -99,7 +99,14 @@ class AuthController extends Controller
             ]);
         
             // Authenticate the user using the provided token in the Authorization header
+           
+            if (!$user = Auth::user()) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
             $user = Auth::user();
+
+            
+           
         
             // Create and associate the company with the authenticated user
             $company = Company::create([
@@ -109,6 +116,8 @@ class AuthController extends Controller
                 'registration_number' => $request->input('registration_number'),
                 'website' => $request->input('website'),
                 'logo' => $request->input('logo'),
+                'user_id'=>$user->id,
+               
                 
             ]);
 
@@ -116,5 +125,8 @@ class AuthController extends Controller
         
             return response()->json(['message' => 'Company registered successfully', 'company' => $company], 201);
         }
+
+
+      
           
 }
