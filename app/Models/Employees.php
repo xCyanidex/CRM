@@ -13,8 +13,6 @@ class Employees extends Model
         'phone_number',
         'dob',
         'gender',
-        'user_id',
-        'company_id',
     ];
 
     public function user(){
@@ -23,5 +21,9 @@ class Employees extends Model
 
     public function company(){
         return $this->belongsTo(Company::class);
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 }

@@ -20,6 +20,8 @@ class freelancerController extends Controller
         }
         return response()->json(['freelancers'=>$freelancer],200);
     }
+
+    
     public function update(Request $request,$id){
         $freelancer= Freelancers::find($id);
         if(!$freelancer){

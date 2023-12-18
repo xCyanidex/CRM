@@ -47,8 +47,8 @@ class EmployeeController extends Controller
             'phone_number' => $request->phone_number,
             'dob' => $request->dob,
             'gender' => $request->gender,
-            'user_id' => $user_id,
-            'company_id' => $company_id,
+            // 'user_id' => $user_id,
+            // 'company_id' => $company_id,
         ]);
 
         return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);

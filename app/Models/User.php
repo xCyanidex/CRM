@@ -44,17 +44,17 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function productOwner()
-    {
-        return $this->hasOne(ProductOwner::class);
-    }
+    // public function productOwner()
+    // {
+    //     return $this->hasOne(ProductOwner::class);
+    // }
     public function company(){
         return $this->belongsTo(Company::class);
     }
     public function employee(){
         return $this->hasOne(Employees::class);
     }
-    public function freelancers(){
+    public function freelancer(){
         return $this->hasOne(Freelancers::class);
     }
 }

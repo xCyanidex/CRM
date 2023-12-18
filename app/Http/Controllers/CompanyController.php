@@ -16,10 +16,10 @@ class CompanyController extends Controller
         }
 
 
-    public function createCompany(Request $request)
-        {
+    // public function createCompany(Request $request)
+    //     {
             
-        }    
+    //     }    
 
     public function updateCompany(Request $request, $id)
         {
