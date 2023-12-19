@@ -6,10 +6,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\freelancerController;
-
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProductOwnerController;
 
 use App\Http\Controllers\EmployeeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -65,3 +66,16 @@ Route::prefix('employees')->group(function () {
     Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
     Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
 });
+
+//verify OTP
+
+Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationController::class, 'verify']);
+Route::middleware(['auth:sanctum','verifyOTP'])->get('/home', function(){
+    return response()->json(['message'=>'Welcome']);
+});
+
+
+
+
+
+
