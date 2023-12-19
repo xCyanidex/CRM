@@ -87,7 +87,6 @@ class AuthController extends Controller
     }
 
 
-
     public function registerCompany(Request $request)
     {
         $request->validate([
@@ -98,31 +97,32 @@ class AuthController extends Controller
             'website' => 'nullable|url',
             'logo' => 'nullable|string',
         ]);
-
+    
         // Authenticate the user using the provided token in the Authorization header
-
-        if (!$user = Auth::user()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
         $user = Auth::user();
-
+        \Log::info('User ID: ' . $user->id);
+        // var_dump($user->id);
+    
         // Create and associate the company with the authenticated user
-        $company = Company::create([
+        $company = $user->company()->create([
             'company_name' => $request->input('company_name'),
             'business_type' => $request->input('business_type'),
             'industry' => $request->input('industry'),
             'registration_number' => $request->input('registration_number'),
             'website' => $request->input('website'),
             'logo' => $request->input('logo'),
-            'user_id' => $user->id,
-
-
+            'user_id' => $user->id
         ]);
 
+        // $user->company()->save($company);
+
+        // Assign the company ID to the user
+        $user->company_id = $company->id;
+        $user->save();
+    
         return response()->json(['message' => 'Company registered successfully', 'company' => $company], 201);
     }
-
+    
     public function registerFreelancer(Request $request)
     {
         $request->validate([

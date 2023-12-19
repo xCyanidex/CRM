@@ -4,12 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\freelancerController;
-
-use App\Http\Controllers\ProductOwnerController;
-
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductOwnerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,11 +32,6 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class,'logou
 Route::middleware('auth:sanctum')->post('/register/company', [AuthController::class, 'registerCompany']);
 Route::middleware('auth:sanctum')->post('/register/freelancer', [AuthController::class, 'registerFreelancer']);
 
-// Routes for Company Management
-Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
-Route::put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
-Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
-
 // Routes for Freelancer Management
 Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
 Route::get('/get-freelancer/{id}', [freelancerController::class, 'show']);
@@ -50,14 +44,18 @@ Route::get('/get-user/{id}', [UserController::class, 'getUser']);
 Route::put('/update-user/{id}', [UserController::class, 'updateUser']);
 Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
 
-// Routes for Product Owner Management
-Route::get('/create-product-owner', [ProductOwnerController::class, 'store']);
-Route::get('/get-all-product-owners', [ProductOwnerController::class, 'index']);
-Route::get('/get-product-owner/{id}', [ProductOwnerController::class, 'show']);
-Route::put('/update-product-owner/{id}', [ProductOwnerController::class, 'update']);
-Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
+// Routes for Company Management
+Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
+Route::put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
+Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
 
-// employee CRUD
+// Routes for Department Management
+Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
+Route::get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
+Route::put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
+Route::delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
+
+// Routes for Employee Management
 Route::prefix('employees')->group(function () {
     Route::get('/get-all', [EmployeeController::class, 'index']);
     Route::middleware('auth:sanctum')->post('/create', [EmployeeController::class, 'store']);
@@ -65,3 +63,12 @@ Route::prefix('employees')->group(function () {
     Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
     Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
 });
+
+
+
+// // Routes for Product Owner Management
+// Route::get('/create-product-owner', [ProductOwnerController::class, 'store']);
+// Route::get('/get-all-product-owners', [ProductOwnerController::class, 'index']);
+// Route::get('/get-product-owner/{id}', [ProductOwnerController::class, 'show']);
+// Route::put('/update-product-owner/{id}', [ProductOwnerController::class, 'update']);
+// Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);

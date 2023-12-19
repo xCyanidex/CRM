@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
@@ -21,19 +22,28 @@ class DepartmentController extends Controller
 
     public function createDepartment(Request $request)
     {
-        try{
-            $request->validate([
-                'name' =>'required',
-                'company_id' =>'required|exists:companies,id',
-            ]);
-    
-            $department = Department::create($request->all());
-    
-            return response()->json(['department' => $department,'message' => 'Department Created Successfully!'], 201);
-        } catch(\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        $request->validate([
+            'department_name' => 'required|string|max:255',
+            // Add other validation rules for department creation
+        ]);
+
+        // Authenticate the user using the provided token in the Authorization header
+        $user = auth()->user();
+
+        // Check if the user has a company associated with them
+        if (!$user->company) {
+            return response()->json(['message' => 'User does not belong to a company'], 400);
         }
+
+        // Create the department and associate it with the company
+        $department = $user->company->departments()->create([
+            'department_name' => $request->input('department_name'),
+            // Other department details
+        ]);
+
+        return response()->json(['message' => 'Department created successfully', 'department' => $department], 201);
     }
+
 
     public function getDepartment($id)
     {
