@@ -13,6 +13,9 @@ class Employees extends Model
         'phone_number',
         'dob',
         'gender',
+        'user_id',
+        'company_id',
+        'department_id'
     ];
 
     public function user(){

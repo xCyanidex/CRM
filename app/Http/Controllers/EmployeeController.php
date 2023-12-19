@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employees;
 use App\Models\Company;
+use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
@@ -27,9 +28,17 @@ class EmployeeController extends Controller
         $user = Auth::user();
         $user_id = $user->id;
         $company_id = Company::where('user_id', $user_id)->value('id');
+        
+        $department_id = $user->company->departments()->value('id');
+
+       
 
         if (!$company_id) {
             return response()->json(['error' => 'Company ID not found for the user'], 400);
+        }
+
+        if ($department_id === null) {
+            return response()->json(['error' => 'Department ID not found for the company'], 400);
         }
 
 
@@ -47,8 +56,9 @@ class EmployeeController extends Controller
             'phone_number' => $request->phone_number,
             'dob' => $request->dob,
             'gender' => $request->gender,
-            // 'user_id' => $user_id,
-            // 'company_id' => $company_id,
+            'user_id' => $user_id,
+            'company_id' => $company_id,
+            'department_id'=>$department_id,
         ]);
 
         return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
