@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PermssionSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,18 +15,22 @@ class PermssionSeeder extends Seeder
     {
         DB::table('permissions')->insert([
             'name' => 'view-company',
-            'guard_name'=>'api'
-           
+            'guard_name' => 'api'
+
         ]);
         DB::table('permissions')->insert([
             'name' => 'create-company',
-            'guard_name'=>'api'
-           
+            'guard_name' => 'api'
+
         ]);
         DB::table('permissions')->insert([
             'name' => 'view-employee',
-            'guard_name'=>'api'
-           
+            'guard_name' => 'api'
+
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'edit-employee',
+            'guard_name' => 'api'
         ]);
     }
 }

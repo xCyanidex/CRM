@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Employees;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Traits\HasRoles;
 
 class EmployeeController extends Controller
 {
+
+    use HasRoles;
     /**
      * Display a listing of the resource.
      */
@@ -50,6 +55,13 @@ class EmployeeController extends Controller
             'user_id' => $user_id,
             'company_id' => $company_id,
         ]);
+
+        $role = Role::where('name', 'employee')->first();
+
+
+        $permission = Permission::where('name', 'edit-employee')->first();
+        $role->givePermissionTo($permission);
+        $employees->assignRole($role);
 
         return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
     }

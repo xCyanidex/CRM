@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 class Employees extends Model
 {
-    use HasFactory;
-    protected $fillable=[
+    use HasFactory, HasRoles;
+    protected $fillable = [
         'employee_name',
         'phone_number',
         'dob',
@@ -17,11 +18,13 @@ class Employees extends Model
         'company_id',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
 }
