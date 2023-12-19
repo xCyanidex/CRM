@@ -8,6 +8,7 @@ use App\Http\Controllers\freelancerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProductOwnerController;
 /*
 |--------------------------------------------------------------------------
@@ -72,3 +73,15 @@ Route::prefix('employees')->group(function () {
 // Route::get('/get-product-owner/{id}', [ProductOwnerController::class, 'show']);
 // Route::put('/update-product-owner/{id}', [ProductOwnerController::class, 'update']);
 // Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
+//verify OTP
+
+Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationController::class, 'verify']);
+Route::middleware(['auth:sanctum','verifyOTP'])->get('/home', function(){
+    return response()->json(['message'=>'Welcome']);
+});
+
+
+
+
+
+

@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Mail;
+
+
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Freelancers;
+
 
 class AuthController extends Controller
 {
@@ -48,11 +53,21 @@ class AuthController extends Controller
             'password' => Hash::make($validatedData['password'])
         ]);
 
+        $otp = rand(100000, 999999);
+
+               // Save OTP to the user
+                     $user->otp = $otp;
+                     $user->save();
+
+               // Send OTP in the verification email
+               Mail::to($user)->send(new VerifyEmail($user, $otp));
+
         //Assigning a Token
 
         $token = $user->createToken('api-token')->plainTextToken;
-        return response()->json(['message' => 'User Created Successfully', 'token' => $token], 201);
+        return response()->json(['message' => 'User Created Successfully and email was sent', 'token'=>$token], 201);
     }
+
 
 
     public function login(Request $request)
