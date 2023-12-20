@@ -24,40 +24,45 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $user = Auth::user();
+        $user_id = $user->id;
+        $company_id = Company::where('user_id', $user_id)->value('id');
+        
+        $department_id = $user->company->departments()->value('id');
+
+        if (!$company_id) {
+            return response()->json(['error' => 'Company ID not found for the user'], 400);
+        }
+
+        if ($department_id === null) {
+            return response()->json(['error' => 'Department ID not found for the company'], 400);
+        }
+
+
         $request->validate([
+            'email' => 'required',
+            'password' => 'password',
             'employee_name' => 'required|string',
             'phone_number' => 'required',
             'dob' => 'required|date',
             'gender' => 'required|in:male,female,other',
-            // Other validations...
+            // 'user_id' => 'required|integer',
+            // 'company_id' => 'required|integer',
         ]);
 
-        // Assume you retrieve the authenticated user (company owner)
-        $authenticatedUser = Auth::user();
-
-        // Assume you get the company and department information of the authenticated user
-        $company = $authenticatedUser->company;
-        $department = $company->departments()->first(); // Assuming the company has at least one department
-
-        // Create a new user for the employee
-        $employeeUser = User::create([
-            'email' => $request->email, // Change as per your requirements
-            'password' => Hash::make($request->password), // Set a default or temporary password
-            // Add other user-related fields as needed
-        ]);
-
-        // Create an employee associated with the new user, company, and department
-        $employee = $company->employees()->create([
+        $employees = Employees::create([
+            'email' => $request->email,
+            'password'=>Hash::make($request->password),
             'employee_name' => $request->employee_name,
             'phone_number' => $request->phone_number,
             'dob' => $request->dob,
             'gender' => $request->gender,
-            'user_id' => $employeeUser->id, // Associate the new user with the employee
-            'department_id' => $department->id, // Assuming department is retrieved
-            // Other employee-related fields...
+            'company_id' => $company_id,
+            'department_id'=>$department_id,
         ]);
 
-        return response()->json(['employee' => $employee, 'message' => 'Employee added successfully'], 201);
+        return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
     }
 
     /**

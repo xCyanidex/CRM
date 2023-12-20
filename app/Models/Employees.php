@@ -15,7 +15,9 @@ class Employees extends Model
         'gender',
         'user_id',
         'company_id',
-        'department_id'
+        'department_id',
+        'email',
+        'password',
     ];
 
     public function user(){
