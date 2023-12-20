@@ -11,9 +11,10 @@ class Freelancers extends Model
     protected $fillable=[
         'freelancer_name',
         'industry',
-        'user_id',
     ];
-    public function user(){
-        return $this->belongsTo(User::class);   
+    
+    public function user()
+    {
+        return $this->morphOne(User::class, 'entity');
     }
 }

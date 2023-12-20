@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('phone_number');
             $table->date('dob');
             $table->enum('gender',['male','female','other']);
-            $table->timestamps();
+            $table->unsignedBigInteger('entity_id');
+            $table->string('entity_type');
             $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('company_id');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

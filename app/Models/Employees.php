@@ -13,19 +13,12 @@ class Employees extends Model
         'phone_number',
         'dob',
         'gender',
-        'user_id',
-        'company_id',
         'department_id',
-        'email',
-        'password',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-    public function company(){
-        return $this->belongsTo(Company::class);
+    public function user()
+    {
+        return $this->morphOne(User::class, 'entity');
     }
 
     public function department(){
