@@ -20,10 +20,10 @@ class User extends Authenticatable implements MustVerifyEmailContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
-        'userType'
+        'userType',
     ];
 
     /**
