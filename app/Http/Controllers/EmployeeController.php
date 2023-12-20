@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employees;
 use App\Models\Company;
-use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Auth::user();
+
+        if (!$this->user) {
+            return response()->json(['error' => 'User not Authorized.'], 400);
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -24,11 +34,11 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        $user_id = $this->user->id;
+        $user = $this->user;
 
-        $user = Auth::user();
-        $user_id = $user->id;
         $company_id = Company::where('user_id', $user_id)->value('id');
-        
+
         $department_id = $user->company->departments()->value('id');
 
         if (!$company_id) {
@@ -53,13 +63,13 @@ class EmployeeController extends Controller
 
         $employees = Employees::create([
             'email' => $request->email,
-            'password'=>Hash::make($request->password),
+            'password' => Hash::make($request->password),
             'employee_name' => $request->employee_name,
             'phone_number' => $request->phone_number,
             'dob' => $request->dob,
             'gender' => $request->gender,
             'company_id' => $company_id,
-            'department_id'=>$department_id,
+            'department_id' => $department_id,
         ]);
 
         return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
