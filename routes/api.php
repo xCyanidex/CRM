@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Routes for Authentication Management
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/users', [AuthController::class,'getAllUsers']);
+Route::get('/users', [AuthController::class, 'getAllUsers']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class,'logout']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->post('/register/company', [AuthController::class, 'registerCompany']);
 Route::middleware('auth:sanctum')->post('/register/freelancer', [AuthController::class, 'registerFreelancer']);
 
@@ -57,9 +57,9 @@ Route::put('/update-department/{id}', [DepartmentController::class, 'updateDepar
 Route::delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
 
 // Routes for Employee Management
-Route::prefix('employees')->group(function () {
+Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
     Route::get('/get-all', [EmployeeController::class, 'index']);
-    Route::middleware('auth:sanctum')->post('/create', [EmployeeController::class, 'store']);
+    Route::post('/create', [EmployeeController::class, 'store']);
     Route::post('/update/{id}', [EmployeeController::class, 'update']);
     Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
     Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
@@ -76,12 +76,6 @@ Route::prefix('employees')->group(function () {
 //verify OTP
 
 Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationController::class, 'verify']);
-Route::middleware(['auth:sanctum','verifyOTP'])->get('/home', function(){
-    return response()->json(['message'=>'Welcome']);
+Route::middleware(['auth:sanctum', 'verifyOTP'])->get('/home', function () {
+    return response()->json(['message' => 'Welcome']);
 });
-
-
-
-
-
-
