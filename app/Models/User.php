@@ -23,8 +23,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'name',
         'email',
         'password',
-        'email_verified_at',
-        'otp',
+        'userType'
     ];
 
     /**
