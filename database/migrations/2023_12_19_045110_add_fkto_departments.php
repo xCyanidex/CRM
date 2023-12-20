@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('departments', function (Blueprint $table) {
             $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('employee_id');
+            // $table->unsignedBigInteger('employee_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            // $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             
         });
     }

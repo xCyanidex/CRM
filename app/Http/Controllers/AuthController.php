@@ -19,11 +19,11 @@ use App\Models\Freelancers;
 class AuthController extends Controller
 {
 
-    public function getAllUsers()
-    {
-        $users = User::all();
-        return response()->json($users);
-    }
+    // public function getAllUsers()
+    // {
+    //     $users = User::all();
+    //     return response()->json($users);
+    // }
 
 
 
@@ -115,8 +115,12 @@ class AuthController extends Controller
     
         // Authenticate the user using the provided token in the Authorization header
         $user = Auth::user();
-        \Log::info('User ID: ' . $user->id);
+        // \Log::info('User ID: ' . $user->id);
         // var_dump($user->id);
+
+        if ($user->company) {
+            return response()->json(['message' => 'User already has a company'], 400);
+        }
     
         // Create and associate the company with the authenticated user
         $company = $user->company()->create([
