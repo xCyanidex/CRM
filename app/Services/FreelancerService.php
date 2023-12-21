@@ -13,7 +13,7 @@ class FreelancerService
         $this->freelancerRepository = $freelancerRepository;
     }
 
-    public function create(array $data)
+    public function createFreelancer(array $data)
     {
         return $this->freelancerRepository->create($data);
     }

@@ -15,6 +15,7 @@ class Company extends Model
         'registration_number',
         'website',
         'logo',
+        'user_id'
     ];
 
     public function users()

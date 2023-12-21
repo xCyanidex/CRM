@@ -14,6 +14,7 @@ class Employee extends Model
         'dob',
         'gender',
         'department_id',
+        'user_id'
     ];
 
     public function user()

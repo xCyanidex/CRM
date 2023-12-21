@@ -15,7 +15,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         $this->employee = $employee;
     }
 
-    public function create(array $data)
+    public function createEmployee(array $data)
     {
         return $this->employee->create($data);
     }

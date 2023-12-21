@@ -15,7 +15,7 @@ class FreelancerRepository implements FreelancerRepositoryInterface
         $this->freelancer = $freelancer;
     }
 
-    public function create(array $data)
+    public function createFreelancer(array $data)
     {
         return $this->freelancer->create($data);
     }
