@@ -3,9 +3,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function getAllUsers()
     {
         $users = User::all();
@@ -14,19 +22,16 @@ class UserController extends Controller
 
     public function createUser(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        return response()->json(['user' => $user, 'message' => 'User Created Successfully!'], 201);
+        $data = $request->all();
+        
+        $user = $this->userService->register($data);
+        if ($user) {
+            // Registration success
+            return response()->json(['user' => $user]);
+        } else {
+            // Registration failed
+            return response()->json(['message' => 'Registration failed'], 500);
+        }
     }
 
     public function getUser($id)

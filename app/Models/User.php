@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'username',
         'email',
         'password',
+        'userType'
     ];
 
     /**
@@ -45,8 +46,18 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'password' => 'hashed',
     ];
 
-    public function entity()
+    public function company()
     {
-        return $this->morphTo('entity');
+        return $this->hasOne(Company::class);
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
+
+    public function freelancer()
+    {
+        return $this->hasOne(Freelancer::class);
     }
 }

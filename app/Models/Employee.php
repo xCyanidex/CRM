@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employees extends Model
+class Employee extends Model
 {
     use HasFactory;
     protected $fillable=[
@@ -18,7 +18,7 @@ class Employees extends Model
 
     public function user()
     {
-        return $this->morphOne(User::class, 'entity');
+        return $this->belongsTo(User::class);
     }
 
     public function department(){

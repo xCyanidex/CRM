@@ -19,7 +19,7 @@ class Company extends Model
 
     public function users()
     {
-        return $this->morphMany(User::class, 'entity');
+        return $this->belongsTo(User::class);
     }
     
     public function departments(){

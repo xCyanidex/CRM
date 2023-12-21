@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('company_name', 50);
-            $table->string('business_type', 50);
-            $table->string('industry', 50);
+            $table->string('company_name');
+            $table->string('business_type');
+            $table->string('industry');
             $table->bigInteger('registration_number');
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
-            $table->unsignedBigInteger('entity_id');
-            $table->string('entity_type');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

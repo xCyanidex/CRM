@@ -42,14 +42,14 @@ class AuthController extends Controller
         return response()->json(['message'=>'You have Logged In', 'token' => $token], 200);
     }
 
-    public function register(Request $request)
+    public function register(Request $request, $userData)
     {
-        $userData = $request->validate([
-            'username' => 'required|string|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6',
-            'entity_type' => 'required|string|in:company,freelancer,employee',
-        ]);
+        // $userData = $request->validate([
+        //     'username' => 'required|string|unique:users',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|string|min:6',
+        //     'entity_type' => 'required|string|in:company,freelancer,employee',
+        // ]);
 
         $user = $this->authService->register($userData);
         return response()->json(['message' => 'User registered successfully']);

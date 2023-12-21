@@ -39,6 +39,7 @@ Route::put('/update-freelancer/{id}', [freelancerController::class, 'update']);
 Route::delete('/delete-freelancer/{id}', [freelancerController::class, 'destroy']);
 
 // Routes for User Management
+Route::post('/create', [UserController::class, 'createUser']);
 Route::get('/get-all-users', [UserController::class, 'getAllUsers']);
 Route::get('/get-user/{id}', [UserController::class, 'getUser']);
 Route::put('/update-user/{id}', [UserController::class, 'updateUser']);

@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('phone_number');
             $table->date('dob');
             $table->enum('gender',['male','female','other']);
-            $table->unsignedBigInteger('entity_id');
-            $table->string('entity_type');
             $table->unsignedBigInteger('department_id');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
