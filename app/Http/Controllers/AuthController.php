@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Mail\VerifyEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Services\UserService;
 
 use App\Services\AuthService;
 
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Freelancers;
 
 
 class AuthController extends Controller
 {
     protected $authService;
+    protected $UserService;
 
-    public function __construct(AuthService $authService){
+    public function __construct(UserService $UserService, AuthService $authService){
+        $this->UserService = $UserService;
         $this->authService = $authService;
     }
 
-    public function login(Request $request, AuthService $authService)
+    public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -42,17 +38,18 @@ class AuthController extends Controller
         return response()->json(['message'=>'You have Logged In', 'token' => $token], 200);
     }
 
-    public function register(Request $request, $userData)
+    public function register(Request $request)
     {
-        // $userData = $request->validate([
-        //     'username' => 'required|string|unique:users',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|string|min:6',
-        //     'entity_type' => 'required|string|in:company,freelancer,employee',
-        // ]);
-
-        $user = $this->authService->register($userData);
-        return response()->json(['message' => 'User registered successfully']);
+        $data = $request->all();
+        
+        $user = $this->authService->register($data);
+        if ($user) {
+            // Registration success
+            return response()->json(['user' => $user]);
+        } else {
+            // Registration failed
+            return response()->json(['message' => 'Registration failed'], 500);
+        }
     }
 
     public function logout(Request $request, AuthService $authService)

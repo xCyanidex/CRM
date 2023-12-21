@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Repositories\EmployeeRepository;
+use App\Repositories\FreelancerRepository;
+use App\Repositories\CompanyRepository;
+
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Freelancers;
@@ -12,10 +16,17 @@ use App\Models\Freelancers;
 class AuthService
 {
     protected $userRepository;
+    protected $employeeRepository;
+    protected $freelancerRepository;
 
-    public function __construct(UserRepository $userRepository)
+    protected $companyRepository;
+
+    public function __construct(UserRepository $userRepository, EmployeeRepository $employeeRepository, FreelancerRepository $freelancerRepository, CompanyRepository $companyRepository) 
     {
         $this->userRepository = $userRepository;
+        $this->employeeRepository = $employeeRepository;
+        $this->freelancerRepository = $freelancerRepository;
+        $this->companyRepository = $companyRepository;
     }
 
     public function login($credentials)
@@ -36,49 +47,56 @@ class AuthService
     }
 
 
-    public function register(array $userData)
+    public function register(array $data)
     {
-        try {
-            $user = User::create([
-                'username' => $userData['username'],
-                'email' => $userData['email'],
-                'password' => bcrypt($userData['password']),
-                'entity_type' => $userData['entity_type'],
-            ]);
-
-            if ($userData['entity_type'] === 'company') {
-                $company = Company::create([
-                    'company_name' => $userData['company_name'],
-                    'business_type' => $userData['business_type'],
-                    'industry' => $userData['industry'],
-                    'registration_number' => $userData['registration_number'],
-                    'website' => $userData['website'],
-                    'logo' => $userData['logo']
+        $user = $this->userRepository->createUser([
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'userType' => $data['userType'],
+        ]);
+    
+        $entityType = $data['userType'];
+    
+        if ($user) {
+            if ($entityType === 'company') {
+                $company = $this->companyRepository->createCompany([
+                    'company_name' => $data['company_name'],
+                    'business_type' => $data['business_type'],
+                    'industry' => $data['industry'],
+                    'registration_number' => $data['registration_number'],
+                    'user_id' => $user->id, // Assigning the user_id to the company
                 ]);
-                $user->entity()->associate($company);
-
-            } elseif ($userData['entity_type'] === 'freelancer') {
-                $freelancer = Freelancer::create([
-                    'freelancer_name' => $userData['freelancer_name'],
-                    'industry' => $userData['industry'],
+                if (!$company) {
+                    throw new \Exception('Company creation failed');
+                }
+            } elseif ($entityType === 'freelancer') {
+                $freelancer = $this->freelancerRepository->createFreelancer([
+                    'freelancer_name' => $data['freelancer_name'],
+                    'industry' => $data['industry'],
+                    'user_id' => $user->id, // Assigning the user_id to the freelancer
                 ]);
-                $user->entity()->associate($freelancer);
-
-            } elseif ($userData['entity_type'] === 'employee') {
-                $employee = Employee::create([
-                    
-                    'employee_name' => $userData['employee_name'],
-                    'phone_number' => $userData['phone_number'],
-                    'dob' => $userData['dob'],
-                    'gender' => $userData['gender'],
-                    'department_id' => $userData['department_id'],
-                ]);
-                $user->entity()->associate($employee);
+                if (!$freelancer) {
+                    throw new \Exception('Freelancer creation failed');
+                }
             }
-            
-            return response()->json(['message' => 'User registered successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Registration failed'], 500);
+            elseif ($entityType === 'employee') {
+                $employee = $this->employeeRepository->createEmployee([
+                    'employee_name' => $data['employee_name'],
+                    'phone_number' => $data['phone_number'],
+                    'dob' => $data['dob'],
+                    'gender' => $data['gender'],
+                    'user_id' => $user->id, // Assigning the user_id to the freelancer
+                    'department_id' => $data['department_id'],
+                    
+                ]);
+                if (!$employee) {
+                    throw new \Exception('Employee creation failed');
+                }
+            }
+            return $user;
+        } else {
+            throw new \Exception('User creation failed');
         }
     }
 
