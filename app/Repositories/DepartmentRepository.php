@@ -15,25 +15,32 @@ class DepartmentRepository implements DepartmentRepositoryInterface
         $this->department = $department;
     }
 
-    public function create(array $data)
+    public function createDepartment(array $data)
     {
         return $this->department->create($data);
     }
 
-    public function update(Department $department, array $data)
+    public function getAllDepartments()
+        {
+            return $this->department->all();
+        }
+
+        public function getDepartmentById($id)
+        {
+            return $this->department->find($id);
+        }    
+
+    public function updateDepartment(array $data)
     {
-        return $department->update($data);
+        return $this->department->update($data);
     }
 
-    public function delete(Department $department)
+    public function deleteDepartment($department)
     {
         return $department->delete();
     }
 
-    public function findById($id)
-    {
-        return $this->department->find($id);
-    }
+    
 
     // Add more specific methods as needed for the Department model
 }

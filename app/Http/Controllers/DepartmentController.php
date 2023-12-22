@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Services\DepartmentService;
 use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
+    protected $departmentService;
+
+    public function __construct(DepartmentService $departmentService)
+        {
+           $this->departmentService = $departmentService;
+           
+        }
     public function getAllDepartments()
     {
-        try{
-            $departments = Department::all();
-            
-            return response()->json(['departments' => $departments, 'message' => 'Departments Fetched Successfully!'], 200);
-
-        } catch(\Exception $e) {
-
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $departments =   $this->departmentService->index();
+      if(!$departments)
+      {
+          return response()->json(['message'=>'No Departments are there yet'],404);
+      }else{
+          return response()->json(['Departments'=>$departments],200);
+      }
     }
 
     public function createDepartment(Request $request)

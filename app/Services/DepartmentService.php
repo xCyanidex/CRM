@@ -15,12 +15,19 @@ class DepartmentService
 
     public function create(array $data)
     {
-        return $this->departmentRepository->create($data);
+        return $this->departmentRepository->createDepartment($data);
     }
+
+    public function index()
+        {
+          
+            $this->departmentRepository->getAllDepartments();
+    
+        }
 
     public function findById($id)
     {
-        return $this->departmentRepository->findById($id);
+         $this->departmentRepository->getDepartmentById($id);
     }
 
     // Add other methods as needed for departments
