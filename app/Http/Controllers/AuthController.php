@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\Requests\UserLoginRequest;
+use Illuminate\Http\Requests\UserRegistrationRequest;
 use App\Services\UserService;
 
 use App\Services\AuthService;
@@ -21,7 +22,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -38,7 +39,7 @@ class AuthController extends Controller
         return response()->json(['message'=>'You have Logged In', 'token' => $token], 200);
     }
 
-    public function register(Request $request)
+    public function register(UserRegistrationRequest $request)
     {
         $data = $request->all();
         
@@ -52,7 +53,7 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request, AuthService $authService)
+    public function logout(Request $request)
     {
         $authService->logout($request->user());
         return response()->json(['message' => 'Logged out successfully']);

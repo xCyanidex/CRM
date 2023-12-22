@@ -25,8 +25,7 @@ class UserRegistrationRequest extends FormRequest
             'username' => 'required|string|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
-            'entity_id' => 'required|integer',
-            'entity_type' => 'required|string|in:company,freelancer,employee',
+            'user_type' => 'required|string|in:company,freelancer,employee',
         ];
     }
 }
