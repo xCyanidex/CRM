@@ -13,7 +13,7 @@ class DepartmentService
         $this->departmentRepository = $departmentRepository;
     }
 
-    public function create(array $data)
+    public function createDepartment(array $data)
     {
         return $this->departmentRepository->createDepartment($data);
     }
@@ -25,8 +25,9 @@ class DepartmentService
     
         }
 
-    public function findById($id)
-    {
+    public function findByName($name)
+    {   
+        $id = 
          $this->departmentRepository->getDepartmentById($id);
     }
 

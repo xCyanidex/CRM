@@ -53,6 +53,7 @@ Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany'
 // Routes for Department Management
 Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
 Route::get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
+Route::post('department/{name}', [DepartmentController::class, 'show']);
 Route::put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
 Route::delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
 
