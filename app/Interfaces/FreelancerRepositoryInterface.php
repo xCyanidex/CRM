@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Interfaces;
+use App\Models\Freelancer;
 
 interface FreelancerRepositoryInterface
 {
     public function createFreelancer(array $data);
-    // public function getAllFreelancers();
-    // public function getFreelancerById($id);
-    // public function updateFreelancer($id, array $data);
-    // public function deleteFreelancer($id);
-    // public function findByEmail($email);
+    public function getAllFreelancers();
+    public function getFreelancerById($id);
+    public function updateFreelancer(Freelancer $freelancer, array $data);
+    public function deleteFreelancer($id);
+ 
 }

@@ -2,19 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FreelancerService;
 use Illuminate\Http\Request;
-use App\Models\Freelancers;
+use App\Models\Freelancer;
 
 class freelancerController extends Controller
 {
+    protected $freelancerService;
+
+    public function __construct(FreelancerService $freelancerService)
+        {   
+            $this->freelancerService = $freelancerService;
+          
+        }
+
     public function getAll(){
-            $freelancer = Freelancers::all();
-            return response()->json(['freelancers' => $freelancer], 200);
+            
+        $freelancer = $this->freelancerService->index();
+        if(!$freelancer)
+        {
+            return response()->json(['message'=>'No Freelancer Found in DataBase'],404);
+        }else{
+            return response()->json(['Freelancers'=> $freelancer],200);
+        }
+            
         }
 
     
     public function show($id){ 
-        $freelancer = Freelancers::find($id);
+        $freelancer = $this->freelancerService->findById($id);
         if(!$freelancer){
             return response()->json(['message'=>'freelancer not found'],404);
         }
@@ -23,26 +39,28 @@ class freelancerController extends Controller
 
     
     public function update(Request $request,$id){
-        $freelancer= Freelancers::find($id);
+
+        $freelancer= $this->freelancerService->findById($id);
+
         if(!$freelancer){
             return response()->json(['message'=>'freelancer not found'],404);
         }else{
-            $request->validate([
-                'freelancer_name'=> 'required',
-                'industry'=>'required',
-            ]);
+            $data = $request->all();
+            $this->freelancerService->update($freelancer, $data);
+           
         }
-        $freelancer->update($request->all());
+       return response()->json(['message'=> 'Freelancer updated', ],200);
     }
 
     public function destroy($id){
-        $freelancer = Freelancers::find($id);
+        $freelancer = $this->freelancerService->findById($id);
         if(!$freelancer){
             return response()->json(['message'=>'freelancer not found'],404);
         }else{
-            $freelancer->delete();
-            return response()->json(['message'=>'freelancer deleted successfully']);
+            
+           $this->freelancerService->deleteFreelancer($freelancer);
         }
+        return response()->json(['message'=>'freelancer deleted successfully']);
     }
 }
 

@@ -20,20 +20,27 @@ class FreelancerRepository implements FreelancerRepositoryInterface
         return $this->freelancer->create($data);
     }
 
-    public function update(Freelancer $freelancer, array $data)
+    public function getAllFreelancers()
+        {
+            return $this->freelancer->all();
+        }
+
+   
+    public function getFreelancerById($id)
+        {
+            return $this->freelancer->find($id);
+        }
+
+    public function updateFreelancer($freelancer, array $data)
     {
         return $freelancer->update($data);
     }
 
-    public function delete(Freelancer $freelancer)
-    {
-        return $freelancer->delete();
-    }
 
-    public function findById($id)
-    {
-        return $this->freelancer->find($id);
-    }
+    public function deleteFreelancer($id)
+        {
+            return $this->freelancer->destroy($id);
+        }
 
     // Add more specific methods as needed for the Freelancer model
 }

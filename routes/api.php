@@ -9,7 +9,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\ProductOwnerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
