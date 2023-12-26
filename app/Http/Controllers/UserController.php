@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Services\UserService;
 
 class UserController extends Controller
@@ -16,27 +16,25 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        $users = User::all();
+        $users = $this->userService->getAllUsers();
         return response()->json(['users' => $users], 200);
     }
 
-    public function createUser(Request $request)
-    {
-        $data = $request->all();
+    // public function createUser(Request $request)
+    // {
+    //     $data = $request->all();
         
-        $user = $this->userService->register($data);
-        if ($user) {
-            // Registration success
-            return response()->json(['user' => $user]);
-        } else {
-            // Registration failed
-            return response()->json(['message' => 'Registration failed'], 500);
-        }
-    }
+    //     $user = $this->userService->createUser($data);
+    //     if ($user) {
+    //         return response()->json(['user' => $user], 200);
+    //     } else {
+    //         return response()->json(['message' => 'Registration failed'], 500);
+    //     }
+    // }
 
     public function getUser($id)
     {
-        $user = User::find($id);
+        $user = $this->userService->getUser($id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
@@ -47,21 +45,23 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        $result = $this->userService->updateUser($request->all(), $id);
 
-        return response()->json(['message' => 'User Updated Successfully!'], 200);
+        if ($result) {
+            return response()->json(['message' => 'User Updated Successfully!'], 200);
+        } else {
+            return response()->json(['message' => 'User not found or update failed'], 404);
+        }
     }
 
-    public function deleteUser(Request $request, $id)
+    public function deleteUser($id)
     {
-        $user = User::find($id);
+        $result = $this->userService->deleteUser($id);
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+        if ($result) {
+            return response()->json(['message' => 'User Deleted Successfully!'], 200);
+        } else {
+            return response()->json(['message' => 'User not found or deletion failed'], 404);
         }
-
-        $user->delete(); // Deletes the user
-        return response()->json(['message' => 'User Deleted Successfully!'], 200);
     }
 }

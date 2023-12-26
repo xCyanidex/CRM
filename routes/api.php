@@ -39,11 +39,11 @@ Route::put('/update-freelancer/{id}', [freelancerController::class, 'update']);
 Route::delete('/delete-freelancer/{id}', [freelancerController::class, 'destroy']);
 
 // Routes for User Management
-Route::post('/create', [UserController::class, 'createUser']);
-Route::get('/get-all-users', [UserController::class, 'getAllUsers']);
-Route::get('/get-user/{id}', [UserController::class, 'getUser']);
-Route::put('/update-user/{id}', [UserController::class, 'updateUser']);
-Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
+// Route::post('/create-user', [UserController::class, 'createUser']);
+Route::middleware('auth:sanctum')->get('/get-all-users', [UserController::class, 'getAllUsers']);
+Route::middleware('auth:sanctum')->get('/get-user/{id}', [UserController::class, 'getUser']);
+Route::middleware('auth:sanctum')->put('/update-user/{id}', [UserController::class, 'updateUser']);
+Route::middleware('auth:sanctum')->delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
 
 // Routes for Company Management
 Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);

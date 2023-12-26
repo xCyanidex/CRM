@@ -1,64 +1,40 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-
-
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Requests\UserLoginRequest;
-use Illuminate\Http\Requests\UserRegistrationRequest;
-use App\Services\UserService;
-
-use App\Services\AuthService;
-
-
+use App\Services\Auth\AuthLoginService;
+use App\Services\Auth\AuthRegistrationService;
+use App\Services\Auth\AuthLogoutService;
 
 class AuthController extends Controller
 {
-    protected $authService;
-    protected $UserService;
+    protected $loginService;
+    protected $registrationService;
+    protected $logoutService;
 
-    public function __construct(UserService $UserService, AuthService $authService){
-        $this->UserService = $UserService;
-        $this->authService = $authService;
+    public function __construct(
+        AuthLoginService $loginService,
+        AuthRegistrationService $registrationService,
+        AuthLogoutService $logoutService
+    ) {
+        $this->loginService = $loginService;
+        $this->registrationService = $registrationService;
+        $this->logoutService = $logoutService;
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        $token = $this->authService->login($credentials);
-        
-        if(!$token)
-        {
-            return response()->json(['message'=>'Invalid Credentials'], 401);
-        }
-
-        return response()->json(['message'=>'You have Logged In', 'token' => $token], 200);
+        return $this->loginService->login($request);
     }
 
     public function register(Request $request)
     {
-        $data = $request->all();
-        
-        $user = $this->authService->register($data);
-        if ($user) {
-            // Registration success
-            return response()->json(['user' => $user]);
-        } else {
-            // Registration failed
-            return response()->json(['message' => 'Registration failed'], 500);
-        }
+        return $this->registrationService->register($request);
     }
 
     public function logout(Request $request)
     {
-        $this->authService->logout($request->user());
-        return response()->json(['message' => 'Logged out successfully']);
+        return $this->logoutService->logout($request);
     }
-
-
 }
