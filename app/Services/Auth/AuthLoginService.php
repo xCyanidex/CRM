@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthLoginService
 {
-    public function login(Request $request)
+    public function login($data)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (!Auth::attempt($credentials)) {
+        // $credentials = $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required'
+        // ]);
+        // var_dump($data);
+        if (!Auth::attempt($data)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 

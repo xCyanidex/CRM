@@ -11,7 +11,7 @@ class UserRegistrationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,11 +21,50 @@ class UserRegistrationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'username' => 'required|string|unique:users',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'user_type' => 'required|string|in:company,freelancer,employee',
+            'userType' => 'required|string|in:company,freelancer,employee',
         ];
+
+        if ($this->input('userType') === 'company') {
+            $rules += [
+                'company_name' => 'required|string',
+                'business_type' => 'required|string',
+                'industry' => 'required|string',
+                'registration_number' => 'required|string',
+            ];
+        } elseif ($this->input('userType') === 'freelancer') {
+            $rules += [
+                'freelancer_name' => 'required|string',
+                'industry' => 'required|string',
+            ];
+        } elseif ($this->input('userType') === 'employee') {
+            $rules += [
+                'employee_name' => 'required|string',
+                'phone_number' => 'required|string',
+                'dob' => 'required|date',
+                'gender' => 'required|string|in:male,female,other',
+                'department_id' => 'required|integer|exists:departments,id',
+            ];
+        }
+
+        return $rules;
     }
+
+    // public function messages()
+    // {
+    //     return [
+    //         'username.required' => 'Username is required.',
+    //         'username.unique' => 'Username already exists.',
+    //         'email.required' => 'Email is required.',
+    //         'email.email' => 'Invalid email format.',
+    //         'email.unique' => 'Email already exists.',
+    //         'password.required' => 'Password is required.',
+    //         'password.min' => 'Password should be at least 6 characters long.',
+    //         'user_type.required' => 'User type is required.',
+    //         'user_type.in' => 'Invalid user type.',
+    //     ];
+    // }
 }

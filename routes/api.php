@@ -9,6 +9,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Requests\UserRegistrationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ use App\Http\Controllers\EmailVerificationController;
 
 // Routes for Authentication Management
 Route::post('/register', [AuthController::class, 'register']);
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 

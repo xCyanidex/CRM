@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\Auth\AuthLoginService;
 use App\Services\Auth\AuthRegistrationService;
 use App\Services\Auth\AuthLogoutService;
+use App\Http\Requests\UserRegistrationRequest;
+use App\Http\Requests\UserLoginRequest;
 
 class AuthController extends Controller
 {
@@ -23,14 +25,18 @@ class AuthController extends Controller
         $this->logoutService = $logoutService;
     }
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        return $this->loginService->login($request);
+        $validatedData = $request->validated();
+        var_dump($validatedData);
+        return $this->loginService->login($validatedData);
     }
 
-    public function register(Request $request)
+
+    public function register(UserRegistrationRequest $request)
     {
-        return $this->registrationService->register($request);
+        $data = $request->validated();
+        return $this->registrationService->register($data);
     }
 
     public function logout(Request $request)
