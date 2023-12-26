@@ -3,101 +3,67 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Employees;
-use App\Models\Company;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
+use App\Services\EmployeeService;
 
 class EmployeeController extends Controller
 {
-    protected $user;
+    protected $employeeService;
 
-    public function __construct()
+    public function __construct(EmployeeService $employeeService)
     {
-        $this->user = Auth::user();
+        $this->employeeService = $employeeService;
 
-        if (!$this->user) {
-            return response()->json(['error' => 'User not Authorized.'], 400);
-        }
+        
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $employees = Employees::all();
-        return response()->json(['employees' => $employees], 200);
+        $employees = $this->employeeService->getAllEmployees();
+        if($employees)
+            {
+                return response()->json(['employees' => $employees], 200);
+            }else{
+                return response()->json(['message'=>'No Employees are there!'], 404);
+            }
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $user_id = $this->user->id;
-        $user = $this->user;
-
-        $company_id = Company::where('user_id', $user_id)->value('id');
-
-        $department_id = $user->company->departments()->value('id');
-
-        if (!$company_id) {
-            return response()->json(['error' => 'Company ID not found for the user'], 400);
-        }
-
-        if ($department_id === null) {
-            return response()->json(['error' => 'Department ID not found for the company'], 400);
-        }
-
-
-        $request->validate([
-            'email' => 'required',
-            'password' => 'password',
-            'employee_name' => 'required|string',
-            'phone_number' => 'required',
-            'dob' => 'required|date',
-            'gender' => 'required|in:male,female,other',
-            // 'user_id' => 'required|integer',
-            // 'company_id' => 'required|integer',
-        ]);
-
-        $employees = Employees::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'employee_name' => $request->employee_name,
-            'phone_number' => $request->phone_number,
-            'dob' => $request->dob,
-            'gender' => $request->gender,
-            'company_id' => $company_id,
-            'department_id' => $department_id,
-        ]);
-
-        return response()->json(['employee' => $employees, 'message' => 'Employee Created Successfully!'], 201);
-    }
+  
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $employee = Employees::find($id);
+        $employee = $this->employeeService->getEmployeeById($id);
 
         if (!$employee) {
             return response()->json(['message' => 'Employee not found'], 404);
         }
 
-        return response()->json(['user' => $employee], 200);
+        return response()->json(['employee' => $employee], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $employee = Employees::findOrFail($id);
-        $employee->update($request->all());
+        $employee = $this->employeeService->getEmployeeById($id);
 
-        return response()->json(['message' => 'Employee Updated Successfully!'], 200);
+        if ($employee) {
+            $data = $request->all();
+            $this->employeeService->updateEmployee($id, $data);
+            return response()->json(['message' => 'Employee Updated Successfully!'], 200);
+        } else {
+            return response()->json(['message' => 'Employee not found'], 404);
+        } 
     }
 
     /**
@@ -105,13 +71,13 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        $employee = Employees::find($id);
+        $employee = $this->employeeService->getEmployeeById($id);
 
         if (!$employee) {
             return response()->json(['message' => 'Employee not found'], 404);
         }
 
-        $employee->delete(); // Deletes the user
+        $this->employeeService->deleteEmployee($employee); // Deletes the user
         return response()->json(['message' => 'Employee Deleted Successfully!'], 200);
     }
 }

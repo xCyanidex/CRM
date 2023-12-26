@@ -22,7 +22,9 @@ class DepartmentRepository implements DepartmentRepositoryInterface
 
     public function getAllDepartments()
         {
-            return $this->department->all();
+          
+                return $this->department->all();
+           
         }
 
         public function getDepartmentById($id)
@@ -30,9 +32,14 @@ class DepartmentRepository implements DepartmentRepositoryInterface
             return $this->department->find($id);
         }    
 
-    public function updateDepartment(array $data)
+    public function updateDepartment($id, array $data)
     {
-        return $this->department->update($data);
+        $department = $this->department->find($id);
+
+        if ($department) {
+            $department->update($data);
+            return $department;
+        }
     }
 
     public function deleteDepartment($department)

@@ -18,18 +18,32 @@ class DepartmentService
         return $this->departmentRepository->createDepartment($data);
     }
 
-    public function index()
+    public function getAllDepartments()
         {
           
-            $this->departmentRepository->getAllDepartments();
-    
+         return   $this->departmentRepository->getAllDepartments();
+   
         }
 
-    public function findByName($name)
-    {   
-        $id = 
-         $this->departmentRepository->getDepartmentById($id);
-    }
 
-    // Add other methods as needed for departments
+    public function getDepartmentById($id)
+        {
+            return $this->departmentRepository->getDepartmentById($id);
+        }    
+   
+    public function updateDepartment($id, array $data)
+        {
+            $department = $this->getDepartmentById($id);
+
+            if ($department) {
+                return $this->departmentRepository->updateDepartment($id, $data);
+            }
+        
+            return null;
+        }
+    
+        public function deleteDepartment($department)
+            {
+                return $this->departmentRepository->deleteDepartment($department);
+            }
 }
