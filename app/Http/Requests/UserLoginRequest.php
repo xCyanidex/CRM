@@ -11,7 +11,7 @@ class UserLoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,25 @@ class UserLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+            // // 'username' => 'required',
+            'email' => 'sometimes|required|email',
+            'password' => 'sometimes|required',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'Email is required!',
+            'password.required' => 'Password is required!'
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            // 'email' => 'trim|lowercase',
+        ];
+    }
+
 }

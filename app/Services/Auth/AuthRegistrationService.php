@@ -29,10 +29,9 @@ class AuthRegistrationService
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function register(Request $request)
+    public function register(array $data)
     {
         try {
-            $data = $request->all();
 
             // Create User
             $user = $this->userRepository->createUser([
@@ -50,10 +49,10 @@ class AuthRegistrationService
             switch ($data['userType']) {
                 case 'company':
                     $company = $this->companyRepository->createCompany([
-                        'company_name' => $request->input('company_name'),
-                        'business_type' => $request->input('business_type'),
-                        'industry' => $request->input('industry'),
-                        'registration_number' => $request->input('registration_number'),
+                        'company_name' => $data['company_name'],
+                        'business_type' => $data['business_type'],
+                        'industry' => $data['industry'],
+                        'registration_number' => $data['registration_number'],
                         'user_id' => $user->id,
                     ]);
 
@@ -64,8 +63,8 @@ class AuthRegistrationService
 
                 case 'freelancer':
                     $freelancer = $this->freelancerRepository->createFreelancer([
-                        'freelancer_name' => $request->input('freelancer_name'),
-                        'industry' => $request->input('industry'),
+                        'freelancer_name' => $data['freelancer_name'],
+                        'industry' => $data['industry'],
                         'user_id' => $user->id,
                     ]);
 
@@ -76,18 +75,21 @@ class AuthRegistrationService
 
                 case 'employee':
                     $employee = $this->employeeRepository->createEmployee([
-                        'employee_name' => $request->input('employee_name'),
-                        'phone_number' => $request->input('phone_number'),
-                        'dob' => $request->input('dob'),
-                        'gender' => $request->input('gender'),
+                        'employee_name' => $data['employee_name'],
+                        'phone_number' => $data['phone_number'],
+                        'dob' => $data['dob'],
+                        'gender' => $data['gender'],
                         'user_id' => $user->id,
-                        'department_id' => $request->input('department_id'),
+                        'department_id' => $data['department_id'],
                     ]);
 
                     if (!$employee) {
                         throw new \Exception('Employee creation failed');
                     }
                     break;
+
+                default:
+                    throw new \Exception('Invalid user type');
             }
 
             
