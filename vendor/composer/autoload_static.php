@@ -591,6 +591,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Services\\Auth\\AuthLoginService' => __DIR__ . '/../..' . '/app/Services/Auth/AuthLoginService.php',
         'App\\Services\\Auth\\AuthLogoutService' => __DIR__ . '/../..' . '/app/Services/Auth/AuthLogoutService.php',
         'App\\Services\\Auth\\AuthRegistrationService' => __DIR__ . '/../..' . '/app/Services/Auth/AuthRegistrationService.php',
+        'App\\Services\\Auth\\EmailVerificationService' => __DIR__ . '/../..' . '/app/Services/Auth/EmailVerificationService.php',
         'App\\Services\\CompanyService' => __DIR__ . '/../..' . '/app/Services/CompanyService.php',
         'App\\Services\\DepartmentService' => __DIR__ . '/../..' . '/app/Services/DepartmentService.php',
         'App\\Services\\EmployeeService' => __DIR__ . '/../..' . '/app/Services/EmployeeService.php',

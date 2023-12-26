@@ -57,6 +57,7 @@ return array(
     'App\\Services\\Auth\\AuthLoginService' => $baseDir . '/app/Services/Auth/AuthLoginService.php',
     'App\\Services\\Auth\\AuthLogoutService' => $baseDir . '/app/Services/Auth/AuthLogoutService.php',
     'App\\Services\\Auth\\AuthRegistrationService' => $baseDir . '/app/Services/Auth/AuthRegistrationService.php',
+    'App\\Services\\Auth\\EmailVerificationService' => $baseDir . '/app/Services/Auth/EmailVerificationService.php',
     'App\\Services\\CompanyService' => $baseDir . '/app/Services/CompanyService.php',
     'App\\Services\\DepartmentService' => $baseDir . '/app/Services/DepartmentService.php',
     'App\\Services\\EmployeeService' => $baseDir . '/app/Services/EmployeeService.php',
