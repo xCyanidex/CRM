@@ -27,10 +27,10 @@ use App\Http\Controllers\EmailVerificationController;
 
 // Routes for Authentication Management
 Route::post('/register', [AuthController::class, 'register']);
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-// Route::middleware('auth:sanctum')->post('/register/company', [AuthController::class, 'registerCompany']);
-// Route::middleware('auth:sanctum')->post('/register/freelancer', [AuthController::class, 'registerFreelancer']);
+
 
 // Routes for Freelancer Management
 Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
@@ -76,7 +76,7 @@ Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
 // Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
 //verify OTP
 
-Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationController::class, 'verify']);
+Route::post('/email-verify', [EmailVerificationController::class, 'verify']);
 Route::middleware(['auth:sanctum', 'verifyOTP'])->get('/home', function () {
     return response()->json(['message' => 'Welcome']);
 });

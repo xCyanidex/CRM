@@ -7,6 +7,8 @@ use App\Repositories\UserRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\FreelancerRepository;
 use App\Repositories\EmployeeRepository;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
 
 class AuthRegistrationService
 {
@@ -30,13 +32,7 @@ class AuthRegistrationService
     public function register(Request $request)
     {
         try {
-            $data = $request->validate([
-                'username' => 'required',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:6',
-                'userType' => 'required|in:company,freelancer,employee',
-                // Add other validation rules based on userType
-            ]);
+            $data = $request->all();
 
             // Create User
             $user = $this->userRepository->createUser([
@@ -94,7 +90,22 @@ class AuthRegistrationService
                     break;
             }
 
-            return response()->json(['message' => 'User registered successfully', 'user' => $user], 200);
+            
+                      $otp = rand(100000, 999999);
+
+                      // Save OTP to the user
+                       $user->otp = $otp;
+                       $user->save();
+
+                        // Send OTP in the verification email
+                        Mail::to($user)->send(new VerifyEmail($user, $otp));
+
+                     //Assigning a Token
+
+                     $token = $user->createToken('api-token')->plainTextToken;
+                     
+
+            return response()->json(['message' => 'User registered successfully','token'=>$token], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
