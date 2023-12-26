@@ -41,7 +41,7 @@ class EmployeeService
 
     public function deleteEmployee($employee)
         {
-            return $this->employeeRepository($employee);
+            return $this->employeeRepository->deleteEmployee($employee);
         }    
 
     // Add other methods as needed for employees
