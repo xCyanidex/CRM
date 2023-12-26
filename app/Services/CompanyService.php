@@ -15,12 +15,27 @@ class CompanyService
 
     public function createCompany(array $data)
     {
-        return $this->companyRepository->create($data);
+        return $this->companyRepository->createCompany($data);
     }
 
     public function findById($id)
     {
         return $this->companyRepository->findById($id);
+    }
+
+    public function getAllCompanies()
+    {
+        return $this->companyRepository->getAllCompanies();
+    }
+
+    public function updateCompany($id, array $data)
+    {
+        return $this->companyRepository->updateCompany($id, $data);
+    }
+
+    public function deleteCompany($id)
+    {
+        return $this->companyRepository->deleteCompany($id);
     }
 
     // Add other methods as needed for companies

@@ -21,23 +21,23 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function getAllCompanies()
     {
-        return Company::all();
+        return $this->company->all();
     }
 
     public function updateCompany($id, array $data)
     {
-        return Company::whereId($id)->update($data);
+        return $this->company->whereId($id)->update($data);
     }
 
     public function deleteCompany($id)
     {
-        return Company::findOrFail($id)->delete();
+        return $this->company->findOrFail($id)->delete();
     }
 
 
     public function findById($id)
     {
-        return Company::find($id);
+        return $this->company->find($id);
     }
 
     // Add more specific methods as needed for the Company model
