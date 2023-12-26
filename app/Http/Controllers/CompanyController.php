@@ -4,45 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Company;
+use App\Services\CompanyService;
 
 class CompanyController extends Controller
 {
+    protected $companyService;
+
+    public function __construct(CompanyService $companyService)
+    {
+        $this->companyService = $companyService;
+    }
 
     public function getAllCompanies()
-        {
-            $companies = Company::all();
-            return response()->json([$companies]);
+    {
+        $companies = $this->companyService->getAllCompanies();
+
+        if (!$companies) {
+            return response()->json(['message' => 'No companies found'], 404);
+        } else {
+            return response()->json(['Companies' => $companies], 200);
         }
-
-
-    // public function createCompany(Request $request)
-    //     {
-            
-    //     }    
+    }
 
     public function updateCompany(Request $request, $id)
-        {
-            $company = Company::findOrFail($id);
-            $company->update($request->all());
+    {
 
-            return response()->json(['message'=>'Company updated Successfully']);
+        $company = $this->companyService->findById($id);
+
+        if (!$company) {
+            return response()->json(['message' => 'company not found'], 404);
+        } else {
+            $data = $request->all();
+            $this->companyService->updateCompany($company, $data);
         }
 
-        public function deleteCompany($id)
-        {
-            try {
-                $company = Company::findOrFail($id);
-                $company->delete();
-        
-                return response()->json(['message' => 'Company deleted Successfully']);
 
-            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-                return response()->json(['message' => 'Company not found'], 404);
+        return response()->json(['message' => 'Company updated',], 200);
+    }
 
-            } catch (\Exception $e) {
-                return response()->json(['message' => 'Error deleting company', 'error' => $e->getMessage()], 500);
-            }
+    public function deleteCompany($id)
+    {
+
+        $company = $this->companyService->findById($id);
+        if (!$company) {
+            return response()->json(['message' => 'company not found'], 404);
+        } else {
+
+            $this->companyService->deleteCompany($company);
         }
-          
+        return response()->json(['message' => 'company deleted successfully']);
+    }
+
+    public function getCompany($id)
+    {
+        $company = $this->companyService->findById($id);
+        if (!$company) {
+            return response()->json(['message' => 'company not found'], 404);
+        } else {
+
+            return response()->json(['Company' => $company], 200);
+        }
+    }
 }

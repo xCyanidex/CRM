@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->delete('/delete-user/{id}', [UserController::
 // Routes for Company Management
 Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
 Route::put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
+Route::put('/get-company/{id}', [CompanyController::class, 'getCompany']);
 Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
 
 // Routes for Department Management

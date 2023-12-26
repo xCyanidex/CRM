@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\FreelancerService;
 use Illuminate\Http\Request;
-use App\Models\Freelancer;
+
 
 class freelancerController extends Controller
 {
@@ -13,19 +13,16 @@ class freelancerController extends Controller
     public function __construct(FreelancerService $freelancerService)
     {
         $this->freelancerService = $freelancerService;
-
     }
 
     public function getAll()
     {
-
         $freelancer = $this->freelancerService->index();
         if (!$freelancer) {
             return response()->json(['message' => 'No Freelancer Found in DataBase'], 404);
         } else {
             return response()->json(['Freelancers' => $freelancer], 200);
         }
-
     }
 
 
