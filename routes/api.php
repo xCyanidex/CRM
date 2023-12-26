@@ -46,10 +46,10 @@ Route::middleware('auth:sanctum')->put('/update-user/{id}', [UserController::cla
 Route::middleware('auth:sanctum')->delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
 
 // Routes for Company Management
-Route::get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
-Route::put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
-Route::put('/get-company/{id}', [CompanyController::class, 'getCompany']);
-Route::delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
+Route::middleware('auth:sanctum')->get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
+Route::middleware('auth:sanctum')->put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
+Route::middleware('auth:sanctum')->get('/get-company/{id}', [CompanyController::class, 'getCompany']);
+Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
 
 // Routes for Department Management
 Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
