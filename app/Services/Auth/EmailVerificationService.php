@@ -1,11 +1,14 @@
 <?php
 
-
+namespace App\Services\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 class EmailVerificationService{
 
     public function verify(Request $request)
 {
-    $user = $request->user();
+    $user = Auth::user();
+    
     $userEmail = $user->email;
 
     if (! $userEmail) {

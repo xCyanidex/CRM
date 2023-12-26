@@ -76,7 +76,7 @@ Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
 // Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
 //verify OTP
 
-Route::post('/email-verify', [EmailVerificationController::class, 'verify']);
+Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationController::class, 'verify']);
 Route::middleware(['auth:sanctum', 'verifyOTP'])->get('/home', function () {
     return response()->json(['message' => 'Welcome']);
 });

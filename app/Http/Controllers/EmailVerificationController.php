@@ -19,7 +19,7 @@ class EmailVerificationController extends Controller
 
     public function verify(Request $request)
         {
-            $this->emailService->verifyEmail($request);
+            return $this->emailService->verify($request);
         }
  
 
