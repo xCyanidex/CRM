@@ -3,30 +3,63 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use App\Repositories\CompanyRepository;
-use App\Repositories\FreelancerRepository;
-use App\Repositories\EmployeeRepository;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     protected $userRepository;
-    protected $companyRepository;
-    protected $freelancerRepository;
-    protected $employeeRepository;
 
-    public function __construct(UserRepository $userRepository, CompanyRepository $companyRepository, FreelancerRepository $freelancerRepository, EmployeeRepository $employeeRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->companyRepository = $companyRepository;
-        $this->freelancerRepository = $freelancerRepository;
-        $this->employeeRepository = $employeeRepository;
     }
             
     public function findByEmail($email)
     {
-        return $this->userRepository->findByEmail($email);
+        try {
+            $user = $this->userRepository->findByEmail($email);
+            return response()->json(['message' => "User fetched successfully", 'user' => $user]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 
-    // Add other methods as needed for users
+    public function getAllUsers()
+    {
+        try {
+            $users = $this->userRepository->getAllUsers();
+            return response()->json(['message' => 'Users fetched successfully', 'users' => $users]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function getUser($id)
+    {
+        try {
+            $user = $this->userRepository->getUserById($id);
+            return response()->json(['message' => 'User fetched successfully', 'user' => $user]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function updateUser(array $data, $id)
+    {
+        try {
+            $userUpdated = $this->userRepository->updateUser($id, $data);
+            return response()->json(['message' => 'User updated successfully', 'user' => $userUpdated]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        try {
+            $deleted = $this->userRepository->deleteUser($id);
+            return response()->json(['message' => 'User deleted successfully', 'deleted' => $deleted]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
 }
