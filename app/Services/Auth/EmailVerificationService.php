@@ -1,7 +1,7 @@
 <?php
 
 
-class VerifyEmail{
+class EmailVerificationService{
 
     public function verify(Request $request)
 {
