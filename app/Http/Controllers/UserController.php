@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -16,52 +17,47 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        $users = $this->userService->getAllUsers();
-        return response()->json(['users' => $users], 200);
+        try {
+            $users = $this->userService->getAllUsers();
+            return response()->json(['users' => $users], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
-
-    // public function createUser(Request $request)
-    // {
-    //     $data = $request->all();
-        
-    //     $user = $this->userService->createUser($data);
-    //     if ($user) {
-    //         return response()->json(['user' => $user], 200);
-    //     } else {
-    //         return response()->json(['message' => 'Registration failed'], 500);
-    //     }
-    // }
 
     public function getUser($id)
     {
-        $user = $this->userService->getUser($id);
-
-        if (!$user) {
+        try {
+            $user = $this->userService->getUser($id);
+            return response()->json(['user' => $user], 200);
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        return response()->json(['user' => $user], 200);
     }
 
     public function updateUser(Request $request, $id)
     {
-        $result = $this->userService->updateUser($request->all(), $id);
-
-        if ($result) {
+        try {
+            $this->userService->updateUser($request->all(), $id);
             return response()->json(['message' => 'User Updated Successfully!'], 200);
-        } else {
-            return response()->json(['message' => 'User not found or update failed'], 404);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
     public function deleteUser($id)
     {
-        $result = $this->userService->deleteUser($id);
-
-        if ($result) {
+        try {
+            $this->userService->deleteUser($id);
             return response()->json(['message' => 'User Deleted Successfully!'], 200);
-        } else {
-            return response()->json(['message' => 'User not found or deletion failed'], 404);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

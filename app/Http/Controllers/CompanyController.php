@@ -17,47 +17,43 @@ class CompanyController extends Controller
 
     public function getAllCompanies()
     {
-        $companies = $this->companyService->getAllCompanies();
-
-        if (!$companies) {
-            return response()->json(['message' => 'No companies found'], 404);
-        } else {
-            return response()->json(['Companies' => $companies], 200);
+        try {
+            $companies = $this->companyService->getAllCompanies();
+            return response()->json(['message' => 'Companies Fetched Successfully!', 'Companies' => $companies], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Company not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
     public function updateCompany(Request $request, $id)
     {
-
-        $company = $this->companyService->findById($id);
-
-        if (!$company) {
-            return response()->json(['message' => 'company not found'], 404);
-        } else {
-            $data = $request->all();
-            $this->companyService->updateCompany($company, $data);
+        try {
+            $updatedCompany = $this->companyService->updateCompany($request->all(), $id);
+            return response()->json(['message' => 'Company Updated Successfully!', 'Company' => $updatedCompany], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Company not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-
-        return response()->json(['message' => 'Company updated',], 200);
     }
 
     public function deleteCompany($id)
     {
-
-        $company = $this->companyService->findById($id);
-        if (!$company) {
-            return response()->json(['message' => 'company not found'], 404);
-        } else {
-
-            $this->companyService->deleteCompany($company);
+        try {
+            $this->companyService->deleteCompany($id);
+            return response()->json(['message' => 'Company Deleted Successfully!'], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Company not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-        return response()->json(['message' => 'company deleted successfully']);
     }
 
     public function getCompany($id)
     {
-        $company = $this->companyService->findById($id);
+        $company = $this->companyService->getCompany($id);
         if (!$company) {
             return response()->json(['message' => 'company not found'], 404);
         } else {

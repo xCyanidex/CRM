@@ -26,7 +26,7 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function updateCompany($id, array $data)
     {
-        return $this->company->whereId($id)->update($data);
+        return $this->company->findOrFail($id)->update($data);
     }
 
     public function deleteCompany($id)
@@ -35,9 +35,9 @@ class CompanyRepository implements CompanyRepositoryInterface
     }
 
 
-    public function findById($id)
+    public function findCompanyById($id)
     {
-        return $this->company->find($id);
+        return $this->company->findOrFail($id);
     }
 
     // Add more specific methods as needed for the Company model

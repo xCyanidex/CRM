@@ -9,5 +9,4 @@ interface EmployeeRepositoryInterface
     public function getEmployeeById($id);
     public function updateEmployee($id, array $data);
     public function deleteEmployee($id);
- 
 }

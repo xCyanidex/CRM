@@ -6,7 +6,7 @@ interface UserRepositoryInterface
 {
     public function createUser(array $data);
     public function getAllUsers();
-    public function getUserById($id);
+    public function findUserById($id);
     public function updateUser($id, array $data);
     public function deleteUser($id);
     public function findByEmail($email);
