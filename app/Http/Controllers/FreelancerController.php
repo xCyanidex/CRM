@@ -6,7 +6,7 @@ use App\Services\FreelancerService;
 use Illuminate\Http\Request;
 
 
-class freelancerController extends Controller
+class FreelancerController extends Controller
 {
     protected $freelancerService;
 

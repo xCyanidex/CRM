@@ -18,9 +18,9 @@ class CompanyService
         return $this->companyRepository->createCompany($data);
     }
 
-    public function findById($id)
+    public function getCompany($id)
     {
-        return $this->companyRepository->findById($id);
+        return $this->companyRepository->findCompanyById($id);
     }
 
     public function getAllCompanies()
@@ -28,7 +28,7 @@ class CompanyService
         return $this->companyRepository->getAllCompanies();
     }
 
-    public function updateCompany($id, array $data)
+    public function updateCompany(array $data, $id)
     {
         return $this->companyRepository->updateCompany($id, $data);
     }

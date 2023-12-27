@@ -20,19 +20,24 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         return $this->employee->create($data);
     }
 
-    public function update(Employee $employee, array $data)
+    public function updateEmployee($id, array $data)
     {
-        return $employee->update($data);
+        return $this->employee->findOrFail($id)->update($data);
     }
 
-    public function delete(Employee $employee)
+    public function getAllEmployees()
     {
-        return $employee->delete();
+        return $this->employee->all();
     }
 
-    public function findById($id)
+    public function getEmployeeById($id)
     {
-        return $this->employee->find($id);
+        return $this->employee->findOrFail($id);
+    }
+
+    public function deleteEmployee($id)
+    {
+        return $this->employee->findOrFail($id)->delete();
     }
 
     // Add more specific methods as needed for the Employee model

@@ -21,23 +21,28 @@ class DepartmentRepository implements DepartmentRepositoryInterface
     }
 
     public function getAllDepartments()
-        {
-            return $this->department->all();
-        }
-
-        public function getDepartmentById($id)
-        {
-            return $this->department->find($id);
-        }    
-
-    public function updateDepartment(array $data)
     {
-        return $this->department->update($data);
+        return $this->department->all();
     }
 
-    public function deleteDepartment($department)
+    public function getDepartmentById($id)
     {
-        return $department->delete();
+        return $this->department->findOrFail($id);
+    }    
+
+    public function updateDepartment($id, array $data)
+    {
+        return $this->department->findOrFail($id)->update($data);
+    }
+
+    public function deleteDepartment($id)
+    {
+        return $this->department->findOrFail($id)->delete();
+    }
+
+    public function findDepartmentByName($name)
+    {
+        return $this->department->where('department_name', $name)->first();
     }
 
     

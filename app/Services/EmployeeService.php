@@ -13,16 +13,30 @@ class EmployeeService
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function create(array $data)
+    public function createEmployee(array $data)
     {
-        return $this->employeeRepository->create($data);
+        return $this->employeeRepository->createEmployee($data);
     }
 
-    public function findById($id)
+    public function getAllEmployees()
     {
-        return $this->employeeRepository->findById($id);
+        return $this->employeeRepository->getAllEmployees();
     }
 
+    public function getEmployee($id)
+    {
+        return $this->employeeRepository->getEmployeeById($id);
+    }
+
+    public function updateEmployee($id, array $data)
+    {
+        return $this->employeeRepository->updateEmployee($id, $data);
+    }
+
+    public function deleteEmployee($id)
+    {
+        return $this->employeeRepository->deleteEmployee($id);
+    }
     // Add other methods as needed for employees
 }
 

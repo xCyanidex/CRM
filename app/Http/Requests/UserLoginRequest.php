@@ -17,14 +17,14 @@ class UserLoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             // // 'username' => 'required',
-            'email' => 'sometimes|required|email',
-            'password' => 'sometimes|required',
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 
@@ -36,11 +36,11 @@ class UserLoginRequest extends FormRequest
         ];
     }
 
-    public function filters()
-    {
-        return [
-            // 'email' => 'trim|lowercase',
-        ];
-    }
+    // public function filters()
+    // {
+    //     return [
+    //         // 'email' => 'trim|lowercase',
+    //     ];
+    // }
 
 }

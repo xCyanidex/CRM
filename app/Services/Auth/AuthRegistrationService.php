@@ -7,8 +7,10 @@ use App\Repositories\UserRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\FreelancerRepository;
 use App\Repositories\EmployeeRepository;
+use App\Services\DepartmentService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Auth;
 
 class AuthRegistrationService
 {
@@ -16,17 +18,20 @@ class AuthRegistrationService
     protected $companyRepository;
     protected $freelancerRepository;
     protected $employeeRepository;
+    protected $departmentService;
 
     public function __construct(
         UserRepository $userRepository,
         CompanyRepository $companyRepository,
         FreelancerRepository $freelancerRepository,
-        EmployeeRepository $employeeRepository
+        EmployeeRepository $employeeRepository,
+        DepartmentService $departmentService
     ) {
         $this->userRepository = $userRepository;
         $this->companyRepository = $companyRepository;
         $this->freelancerRepository = $freelancerRepository;
         $this->employeeRepository = $employeeRepository;
+        $this->departmentService = $departmentService;
     }
 
     public function register(array $data)
@@ -99,6 +104,8 @@ class AuthRegistrationService
                        $user->otp = $otp;
                        $user->save();
 
+                    //    var_dump($otp);
+
                         // Send OTP in the verification email
                         Mail::to($user)->send(new VerifyEmail($user, $otp));
 
@@ -107,7 +114,7 @@ class AuthRegistrationService
                      $token = $user->createToken('api-token')->plainTextToken;
                      
 
-            return response()->json(['message' => 'User registered successfully','token'=>$token], 200);
+            return response()->json(['message' => 'User registered successfully! Check Inbox for OTP!','token'=>$token], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

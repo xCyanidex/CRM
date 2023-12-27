@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Repositories;
-use App\Interfaces\UserRepositoryInterface;
-use App\Models\User;
 
-class UserRepository implements UserRepositoryInterface
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class UserRepository
 {
     protected $user;
 
@@ -28,39 +29,19 @@ class UserRepository implements UserRepositoryInterface
         return $this->user->all();
     }
 
-    public function getUserById($id)
+    public function findUserById($id)
     {
-        try {
-            return $this->user->findOrFail($id);
-        } catch (\Exception $e) {
-            return null; // Return null if user not found
-        }
+        return $this->user->findOrFail($id);
     }
 
     public function updateUser($id, array $data)
     {
-        $user = $this->getUserById($id);
-
-        if (!$user) {
-            return ['message' => 'User not found!']; // Return an array instead of using response()->json()
-        }
-
-        try {
-            $user->update($data);
-            return $user;
-        } catch (\Exception $e) {
-            return ['message' => $e->getMessage()]; // Return an array with error message
-        }
+        return $this->user->findOrFail($id)->update($data);
+        // $user->update($data);
     }
 
     public function deleteUser($id)
     {
-        try {
-            return $this->user->destroy($id);
-        } catch (\Exception $e) {
-            return ['message' => $e->getMessage()]; // Return an array with error message
-        }
+        return $this->user->findOrFail($id)->delete();
     }
-
-    // Add other methods as needed (update, delete, find by ID, etc.)
 }
