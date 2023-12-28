@@ -3,13 +3,19 @@
 namespace App\Repositories;
 
 use App\Interfaces\TaskRepositoryInterface;
+use App\Models\Employee;
 use App\Models\Task;
+
+use function Laravel\Prompts\error;
+
 // use Illuminate\Http\Request;
 
 class TaskRepository implements TaskRepositoryInterface{
     protected $task;
-    public function __construct(Task $task)
+    protected $employee;
+    public function __construct(Task $task,Employee $employee)
     {   
+        $this->employee=$employee;
         $this->task = $task;
     }
     public function createTask(array $data){
@@ -21,11 +27,8 @@ class TaskRepository implements TaskRepositoryInterface{
     public function deleteTask($id){
         return $this->task->delete($id);
     }
-    public function getAllTasks($id){  
-        return $this->task->with(['assigned_to','assigned_by'])->findOrFail('id');
+    public function getAllTasks(){  
+        return $this->task->with(['assigned_to','assigned_by']);
     }
-    public function assignTask($id, $assigned_by, $assigned_to)
-    {
-        
-    }
+   
 }

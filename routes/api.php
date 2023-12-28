@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\freelancerController;
 use App\Http\Controllers\CompanyController;
@@ -84,3 +85,7 @@ Route::middleware(['auth:sanctum', 'verifyOTP'])->get('/home', function () {
 
 
 // Routes for task apis
+Route::post('create-task',[TaskController::class,'createTask']);
+Route::post('show-task',[TaskController::class,'getAllTasks']);
+Route::post('update-task',[TaskController::class,'updateTask']);
+Route::post('delete-task',[TaskController::class,'deleteTask']);

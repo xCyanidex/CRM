@@ -16,6 +16,6 @@ class Task extends Model
         'status',
     ];
     public function employee(){
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employee::class,'assigned_to','assigned_by','task_id');
     }
 }

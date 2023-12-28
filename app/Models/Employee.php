@@ -26,6 +26,6 @@ class Employee extends Model
         return $this->belongsTo(Department::class);
     }
     public function task(){
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class,'assigned_to','assigned_by','task_id');
     }
 }
