@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('freelancer_name');
             $table->string('industry');
-            $table->timestamps();
             $table->unsignedBigInteger('user_id');
+            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

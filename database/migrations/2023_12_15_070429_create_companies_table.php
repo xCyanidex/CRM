@@ -19,10 +19,10 @@ return new class extends Migration
             $table->bigInteger('registration_number');
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
-            // $table->unsignedBigInteger('user_id');          
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-        //    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

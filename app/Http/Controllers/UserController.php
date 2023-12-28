@@ -3,64 +3,63 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 
 class UserController extends Controller
 {
-    
-    public function getAllUsers()
+    protected $userService;
+
+    public function __construct(UserService $userService)
     {
-        $users = User::all();
-        return response()->json(['users' => $users], 200);
+        $this->userService = $userService;
     }
 
-    public function createUser(Request $request)
+    public function getAllUsers()
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        return response()->json(['user' => $user, 'message' => 'User Created Successfully!'], 201);
+        try {
+            $users = $this->userService->getAllUsers();
+            return response()->json(['users' => $users], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function getUser($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
+        try {
+            $user = $this->userService->getUser($id);
+            return response()->json(['user' => $user], 200);
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        return response()->json(['user' => $user], 200);
     }
 
     public function updateUser(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
-
-        return response()->json(['message' => 'User Updated Successfully!'], 200);
+        try {
+            $this->userService->updateUser($request->all(), $id);
+            return response()->json(['message' => 'User Updated Successfully!'], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
-    public function deleteUser(Request $request, $id)
+    public function deleteUser($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
+        try {
+            $this->userService->deleteUser($id);
+            return response()->json(['message' => 'User Deleted Successfully!'], 200);
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        $user->delete(); // Deletes the user
-        return response()->json(['message' => 'User Deleted Successfully!'], 200);
     }
 }

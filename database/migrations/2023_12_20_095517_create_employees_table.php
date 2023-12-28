@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('employee_name');
-          //  $table->unsignedBigInteger('user_id');
             $table->string('phone_number');
             $table->date('dob');
             $table->enum('gender',['male','female','other']);
-
+            $table->unsignedBigInteger('department_id');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
-
-        //    $table->foreign('user_id')->references('id')->on('User')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

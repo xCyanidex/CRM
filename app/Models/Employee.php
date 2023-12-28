@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 
-class Employees extends Model
+class Employee extends Model
 {
     use HasFactory, HasRoles;
     protected $fillable = [
@@ -14,8 +14,8 @@ class Employees extends Model
         'phone_number',
         'dob',
         'gender',
-        'user_id',
-        'company_id',
+        'department_id',
+        'user_id'
     ];
 
     public function user()
@@ -23,8 +23,7 @@ class Employees extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 }

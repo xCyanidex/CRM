@@ -15,13 +15,15 @@ class Company extends Model
         'registration_number',
         'website',
         'logo',
-        'user_id',
+        'user_id'
     ];
 
-    public function user(){
-        return $this->hasMany(User::class);
+    public function users()
+    {
+        return $this->belongsTo(User::class);
     }
-    public function employee(){
-        return $this->hasMany(Employees::class);
+    
+    public function departments(){
+        return $this->hasMany(Department::class);
     }
 }

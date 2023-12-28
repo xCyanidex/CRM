@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_owners', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('otp')->nullable();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_owners');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -170,6 +170,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Nwidart\Modules\LaravelModulesServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ])->toArray(),
 
     /*

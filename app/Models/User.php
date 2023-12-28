@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -19,9 +20,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'userType',
+        'email_verified_at',
+        'otp'
     ];
 
     /**
@@ -44,17 +48,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function productOwner()
+    public function company()
     {
-        return $this->hasOne(ProductOwner::class);
+        return $this->hasOne(Company::class);
     }
-    public function company(){
-        return $this->belongsTo(Company::class);
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
-    public function employee(){
-        return $this->hasOne(Employees::class);
-    }
-    public function freelancers(){
-        return $this->hasOne(Freelancers::class);
+
+    public function freelancer()
+    {
+        return $this->hasOne(Freelancer::class);
     }
 }
