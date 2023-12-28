@@ -81,3 +81,6 @@ Route::middleware('auth:sanctum')->post('/email-verify', [EmailVerificationContr
 Route::middleware(['auth:sanctum', 'verifyOTP'])->get('/home', function () {
     return response()->json(['message' => 'Welcome']);
 });
+
+
+// Routes for task apis
