@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\freelancerController;
 use App\Http\Controllers\CompanyController;
@@ -58,17 +59,10 @@ Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyContro
 
 // Routes for Department Management
 Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
-<<<<<<< HEAD
-Route::get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
-Route::get('department/{id}', [DepartmentController::class, 'show']);
-Route::put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
-Route::delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
-=======
 Route::middleware('auth:sanctum')->get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
 Route::middleware('auth:sanctum')->get('/get-department/{name}', [DepartmentController::class, 'findDepartmentByName']);
 Route::middleware('auth:sanctum')->put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
 Route::middleware('auth:sanctum')->delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
->>>>>>> validations
 
 // Routes for Employee Management
 Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
@@ -89,4 +83,8 @@ Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
 // Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
 //verify OTP
 
-
+// Routes for task apis
+Route::post('create-task',[TaskController::class,'createTask']);
+Route::post('show-task',[TaskController::class,'getAllTasks']);
+Route::post('update-task',[TaskController::class,'updateTask']);
+Route::post('delete-task',[TaskController::class,'deleteTask']);
