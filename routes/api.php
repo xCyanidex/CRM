@@ -85,6 +85,7 @@ Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
 
 // Routes for task apis
 Route::post('create-task',[TaskController::class,'createTask']);
-Route::post('show-task',[TaskController::class,'getAllTasks']);
-Route::post('update-task',[TaskController::class,'updateTask']);
-Route::post('delete-task',[TaskController::class,'deleteTask']);
+Route::get('show-task',[TaskController::class,'getAllTasks']);
+Route::put('update-task',[TaskController::class,'updateTask']);
+Route::delete('delete-task',[TaskController::class,'deleteTask']);
+Route::post('assign-task',[TaskController::class,'assignTask']);

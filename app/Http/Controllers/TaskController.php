@@ -26,7 +26,7 @@ class TaskController extends Controller
         }
     }
     public function deleteTask(Request $request,$id){
-        $task = $this->taskService::findById($id);
+        $task = $this->taskService->findById($id);
         if(!$task){
             return response()->json(['message'=>'task not found']);
         }else{
@@ -34,7 +34,7 @@ class TaskController extends Controller
         }        
     }
     public function updateTask(Request $request,$id){
-        $task=$this->taskService::findById($id);
+        $task=$this->taskService->findById($id);
         if(!$task){
             return response()->json(['message'=>'task not found']);
         }else{
@@ -42,10 +42,12 @@ class TaskController extends Controller
             return $this->taskService->updateTask($id,$data);
         }
     }  
-    public function assignTask(Request $request,$id){
-        $task = $this->taskService::findById($request->assigned_to);
-        return $task = $this->taskService->assignTask($id,$assigned_to);
+    public function createTask(Request $request){
+        return $this->taskService->createTask($request->all());
     } 
+    public function assignTask(Request $request){
+        return $this->taskService->assigntask($request->all());
+    }
 
 //
 //     protected $employeeService;

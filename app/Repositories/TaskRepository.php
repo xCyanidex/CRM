@@ -6,7 +6,6 @@ use App\Interfaces\TaskRepositoryInterface;
 use App\Models\Employee;
 use App\Models\Task;
 
-use function Laravel\Prompts\error;
 
 // use Illuminate\Http\Request;
 
@@ -29,6 +28,9 @@ class TaskRepository implements TaskRepositoryInterface{
     }
     public function getAllTasks(){  
         return $this->task->with(['assigned_to','assigned_by']);
+    }
+    public function assignTask(array $data){
+        return $this->task->create($data);
     }
    
 }

@@ -17,7 +17,9 @@ use App\Interfaces\FreelancerRepositoryInterface;
 use App\Repositories\FreelancerRepository;
 
 use App\Interfaces\DepartmentRepositoryInterface;
+use App\Interfaces\TaskRepositoryInterface;
 use App\Repositories\DepartmentRepository;
+use App\Repositories\TaskRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FreelancerRepositoryInterface::class, FreelancerRepository::class);
         $this->app->bind(EmployeeRepositoryInterface::class, EmployeeRepository::class);
         $this->app->bind(DepartmentRepositoryInterface::class, DepartmentRepository::class);
+        $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
     }
 
     /**

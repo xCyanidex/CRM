@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Repositories\TaskRepository;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Repositories\EmployeeRepository;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Mail\Transport\ArrayTransport;
 
 class TaskService {
     protected $taskRepository;
@@ -41,6 +43,20 @@ class TaskService {
     }
     public function getAllTasks(){
         return $this->taskRepository->getAllTasks();
+    }
+    public function assigntask(array $data){
+        $employee = Auth::user();
+        if(!$employee){
+            return response()->json(['message'=>'employee does not exist']);
+        }
+        $assigned_by = $employee->id;
+        
+        return $this->taskRepository->assignTask([
+            'assigned_to'=>$data['assigned_to'],
+            'assigned_by'=>$assigned_by,
+            'task_id'=>$data['task_id']
+        ]);
+
     }
    
 }
