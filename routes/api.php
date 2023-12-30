@@ -58,17 +58,10 @@ Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyContro
 
 // Routes for Department Management
 Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
-<<<<<<< HEAD
-Route::get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
-Route::get('department/{id}', [DepartmentController::class, 'show']);
-Route::put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
-Route::delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
-=======
 Route::middleware('auth:sanctum')->get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
 Route::middleware('auth:sanctum')->get('/get-department/{name}', [DepartmentController::class, 'findDepartmentByName']);
 Route::middleware('auth:sanctum')->put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
 Route::middleware('auth:sanctum')->delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
->>>>>>> validations
 
 // Routes for Employee Management
 Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
