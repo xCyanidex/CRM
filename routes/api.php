@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
@@ -9,8 +8,7 @@ use App\Http\Controllers\freelancerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\EmailVerificationController;
-use App\Http\Requests\UserRegistrationRequest;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +21,6 @@ use App\Http\Requests\UserRegistrationRequest;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 // Routes for Authentication Management
 Route::post('/register', [AuthController::class, 'register']);
@@ -39,53 +34,62 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 
 // Routes for Freelancer Management
-Route::get('/get-all-freelancers', [freelancerController::class, 'getAll']);
-Route::get('/get-freelancer/{id}', [freelancerController::class, 'show']);
-Route::put('/update-freelancer/{id}', [freelancerController::class, 'update']);
-Route::delete('/delete-freelancer/{id}', [freelancerController::class, 'destroy']);
+Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function () {
+    Route::get('/get-all-freelancers', [FreelancerController::class, 'getAll']);
+    Route::get('/get-freelancer/{id}', [FreelancerController::class, 'show']);
+    Route::put('/update-freelancer/{id}', [FreelancerController::class, 'update']);
+    Route::delete('/delete-freelancer/{id}', [FreelancerController::class, 'destroy']);
+});
 
 // Routes for User Management
-// Route::post('/create-user', [UserController::class, 'createUser']);
-Route::middleware('auth:sanctum')->get('/get-all-users', [UserController::class, 'getAllUsers']);
-Route::middleware('auth:sanctum')->get('/get-user/{id}', [UserController::class, 'getUser']);
-Route::middleware('auth:sanctum')->put('/update-user/{id}', [UserController::class, 'updateUser']);
-Route::middleware('auth:sanctum')->delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
+Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function (){
+    Route::middleware('auth:sanctum')->get('/get-all-users', [UserController::class, 'getAllUsers']);
+    Route::middleware('auth:sanctum')->get('/get-user/{id}', [UserController::class, 'getUser']);
+    Route::middleware('auth:sanctum')->put('/update-user/{id}', [UserController::class, 'updateUser']);
+    Route::middleware('auth:sanctum')->delete('/delete-user/{id}', [UserController::class, 'deleteUser']);
+});
+
 
 // Routes for Company Management
-Route::middleware('auth:sanctum')->get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
-Route::middleware('auth:sanctum')->put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
-Route::middleware('auth:sanctum')->get('/get-company/{id}', [CompanyController::class, 'getCompany']);
-Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
+Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function () {
+    Route::middleware('auth:sanctum')->get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
+    Route::middleware('auth:sanctum')->put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
+    Route::middleware('auth:sanctum')->get('/get-company/{id}', [CompanyController::class, 'getCompany']);
+    Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
+});
+
 
 // Routes for Department Management
-Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
+Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
+    Route::middleware('auth:sanctum')->post('/create-department', [DepartmentController::class, 'createDepartment']);
 Route::middleware('auth:sanctum')->get('/get-all-departments', [DepartmentController::class, 'getAllDepartments']);
 Route::middleware('auth:sanctum')->get('/get-department/{name}', [DepartmentController::class, 'findDepartmentByName']);
 Route::middleware('auth:sanctum')->put('/update-department/{id}', [DepartmentController::class, 'updateDepartment']);
 Route::middleware('auth:sanctum')->delete('/delete-department/{id}', [DepartmentController::class, 'deleteDepartment']);
+});
 
 // Routes for Employee Management
-Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
-    Route::get('/get-all', [EmployeeController::class, 'index']);
-    Route::post('/create', [EmployeeController::class, 'store']);
-    Route::post('/update/{id}', [EmployeeController::class, 'update']);
-    Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
-    Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
+Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
+    Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
+        Route::get('/get-all', [EmployeeController::class, 'index']);
+        Route::post('/create', [EmployeeController::class, 'store']);
+        Route::post('/update/{id}', [EmployeeController::class, 'update']);
+        Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
+        Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
+    });
 });
 
 
 
-// // Routes for Product Owner Management
-// Route::get('/create-product-owner', [ProductOwnerController::class, 'store']);
-// Route::get('/get-all-product-owners', [ProductOwnerController::class, 'index']);
-// Route::get('/get-product-owner/{id}', [ProductOwnerController::class, 'show']);
-// Route::put('/update-product-owner/{id}', [ProductOwnerController::class, 'update']);
-// Route::delete('/delete-product-owner/{id}', [ProductOwnerController::class, 'destroy']);
-//verify OTP
-
 // Routes for task apis
-Route::post('create-task',[TaskController::class,'createTask']);
-Route::get('show-task',[TaskController::class,'getAllTasks']);
-Route::put('update-task',[TaskController::class,'updateTask']);
-Route::delete('delete-task',[TaskController::class,'deleteTask']);
-Route::post('assign-task',[TaskController::class,'assignTask']);
+Route::middleware(['auth:sanctum', 'role:employee'])->group(function (){
+
+    Route::post('create-task',[TaskController::class,'createTask']);
+    Route::get('show-task',[TaskController::class,'getAllTasks']);
+    Route::put('update-task',[TaskController::class,'updateTask']);
+    Route::delete('delete-task',[TaskController::class,'deleteTask']);
+    Route::post('assign-task',[TaskController::class,'assignTask']);
+});
+
+
+

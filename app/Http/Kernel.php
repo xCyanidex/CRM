@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // ... other middleware entries ...
         'verifyOTP' => \App\Http\Middleware\VerifyOTP::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 }
