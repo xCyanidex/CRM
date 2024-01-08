@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+    laravel-crm:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: "1000"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        ports:
+            - 8000:8000
+        environment:
+            WWWUSER: "ryanchahour"
+            DB_HOST: database
+            DB_DATABASE: CRM
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            # Ensure the port matches the one where your MySQL container exposes its service, typically 3306
+            DB_PORT: 3306
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - database
+        networks:
+            - app
+
+    database:
+        image: "mysql/mysql-server:8.0"
+        ports:
+            - "3306"
+        environment:
+            MYSQL_DATABASE: "CRM"
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "root"
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - app
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - "-p${DB_PASSWORD}"
+            retries: 3
+            timeout: 5s
+
+networks:
+    app:
+        driver: bridge

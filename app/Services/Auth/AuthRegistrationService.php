@@ -10,6 +10,8 @@ use App\Repositories\EmployeeRepository;
 use App\Services\DepartmentService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 
 class AuthRegistrationService
@@ -61,6 +63,16 @@ class AuthRegistrationService
                         'user_id' => $user->id,
                     ]);
 
+                    $companyAdminPermissions = [
+                        'create department', 'view department', 'update department', 'delete department',
+                        'create employee', 'view employee', 'update employee', 'delete employee',
+                        
+                    ];
+
+                    $role =  Role::where('name', 'company-admin')->firstOrFail()->syncPermissions($companyAdminPermissions);
+
+                    $user->assignRole($role);
+
                     if (!$company) {
                         throw new \Exception('Company creation failed');
                     }
@@ -72,6 +84,12 @@ class AuthRegistrationService
                         'industry' => $data['industry'],
                         'user_id' => $user->id,
                     ]);
+
+                    $freelancerPermissions = [ 'create project', 'view project', 'update project', 'delete project'];
+                    
+                    $role =  Role::where('name', 'freelancer')->firstOrFail()->syncPermissions($freelancerPermissions); 
+                    
+                    $user->assignRole($role);
 
                     if (!$freelancer) {
                         throw new \Exception('Freelancer creation failed');
@@ -88,6 +106,10 @@ class AuthRegistrationService
                         'department_id' => $data['department_id'],
                     ]);
 
+                    $employeePermissions = ['view task'];
+                    $role =  Role::where('name', 'employee')->firstOrFail()->syncPermissions($employeePermissions);
+
+                    $user->assignRole($role);
                     if (!$employee) {
                         throw new \Exception('Employee creation failed');
                     }
