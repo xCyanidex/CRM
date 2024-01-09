@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * AuthRegistrationService Class
+ *
+ * This class manages user registration based on their type (company, freelancer, employee).
+ * It handles user creation, associated entity creation, role assignment, and email verification.
+ */
+
 namespace App\Services\Auth;
 
 use Illuminate\Http\Request;
@@ -34,6 +41,14 @@ class AuthRegistrationService
         $this->employeeRepository = $employeeRepository;
         $this->departmentService = $departmentService;
     }
+
+     /**
+     * Register a new user based on their type.
+     * Assign proper permissions according to their role
+     *
+     * @param array $data User registration data
+     * @return \Illuminate\Http\JsonResponse
+     */
 
     public function register(array $data)
     {
