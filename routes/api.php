@@ -103,13 +103,18 @@ Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
 
 
 
-// Routes for task apis
+// Middleware group that applies 'auth:sanctum' and 'role:employee' middleware to all routes within the group
 Route::middleware(['auth:sanctum', 'role:employee'])->group(function (){
 
+    // POST route to create a new task, handled by the createTask method in TaskController
     Route::post('create-task',[TaskController::class,'createTask']);
+    // GET route to retrieve all tasks, handled by the getAllTasks method in TaskController
     Route::get('show-task',[TaskController::class,'getAllTasks']);
+    // PUT route to update an existing task, handled by the updateTask method in TaskController
     Route::put('update-task',[TaskController::class,'updateTask']);
+    // DELETE route to delete a task, handled by the deleteTask method in TaskController
     Route::delete('delete-task',[TaskController::class,'deleteTask']);
+    // POST route to assign a task, handled by the assignTask method in TaskController
     Route::post('assign-task',[TaskController::class,'assignTask']);
 });
 
