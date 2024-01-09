@@ -8,6 +8,8 @@ class UserRegistrationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     * 
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -21,6 +23,7 @@ class UserRegistrationRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Basic validation rules common to all user types
         $rules = [
             'username' => 'required|string|unique:users',
             'email' => 'required|email|unique:users,email',
@@ -28,6 +31,7 @@ class UserRegistrationRequest extends FormRequest
             'userType' => 'required|string|in:company,freelancer,employee',
         ];
 
+        // Additional validation rules based on user type
         if ($this->input('userType') === 'company') {
             $rules += [
                 'company_name' => 'required|string',
@@ -53,7 +57,12 @@ class UserRegistrationRequest extends FormRequest
         return $rules;
     }
 
-    public function messages()
+    /**
+     * Get custom validation messages.
+     *
+     * @return array
+     */
+    public function messages(): array
     {
         return [
             'username.required' => 'Username is required.',

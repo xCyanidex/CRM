@@ -8,6 +8,8 @@ class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -22,25 +24,33 @@ class UserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            // // 'username' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email', // Validation rule for email field
+            'password' => 'required',   // Validation rule for password field
         ];
     }
 
+    /**
+     * Get the custom validation error messages.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-            'email.required' => 'Email is required!',
-            'password.required' => 'Password is required!'
+            'email.required' => 'Email is required!',      // Custom error message for the required email field
+            'password.required' => 'Password is required!' // Custom error message for the required password field
         ];
     }
 
+    // /**
+    //  * Get filters to be applied to the input.
+    //  *
+    //  * @return array
+    //  */
     // public function filters()
     // {
     //     return [
-    //         // 'email' => 'trim|lowercase',
+    //         'email' => 'trim|lowercase',
     //     ];
     // }
-
 }
