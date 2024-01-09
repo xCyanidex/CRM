@@ -12,6 +12,7 @@
  */
 
 // Import necessary classes and namespaces
+namespace App\Repositories;
 use App\Models\Company;
 use App\Interfaces\CompanyRepositoryInterface;
 

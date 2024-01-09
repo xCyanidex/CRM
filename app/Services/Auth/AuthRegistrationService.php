@@ -11,8 +11,7 @@ use App\Services\DepartmentService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Auth;
+
 
 class AuthRegistrationService
 {
