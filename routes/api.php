@@ -34,12 +34,23 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 
 // Routes for Freelancer Management
+//  with middleware for Sanctum authentication and a specific role requirement.
+
 Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function () {
+
+    // Route to get all freelancers, requires authentication and product-owner role.
     Route::get('/get-all-freelancers', [FreelancerController::class, 'getAll']);
+
+    // Route to get a specific freelancer by ID, requires authentication and product-owner role.
     Route::get('/get-freelancer/{id}', [FreelancerController::class, 'show']);
+
+    // Route to update a freelancer by ID, requires authentication and product-owner role.
     Route::put('/update-freelancer/{id}', [FreelancerController::class, 'update']);
+
+    // Route to delete a freelancer by ID, requires authentication and product-owner role.
     Route::delete('/delete-freelancer/{id}', [FreelancerController::class, 'destroy']);
 });
+
 
 // Routes for User Management
 Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function (){
@@ -50,13 +61,24 @@ Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function (){
 });
 
 
-// Routes for Company Management
+//  Routes for Company Management 
+// routes with middleware for Sanctum authentication and a specific role requirement.
+
 Route::middleware(['auth:sanctum', 'role:product-owner'])->group(function () {
+
+    // Route to get all companies, requires authentication.
     Route::middleware('auth:sanctum')->get('/get-all-companies', [CompanyController::class, 'getAllCompanies']);
+
+    // Route to update a company by ID, requires authentication.
     Route::middleware('auth:sanctum')->put('/update-company/{id}', [CompanyController::class, 'updateCompany']);
+
+    // Route to get a specific company by ID, requires authentication.
     Route::middleware('auth:sanctum')->get('/get-company/{id}', [CompanyController::class, 'getCompany']);
+
+    // Route to delete a company by ID, requires authentication.
     Route::middleware('auth:sanctum')->delete('/delete-company/{id}', [CompanyController::class, 'deleteCompany']);
 });
+
 
 
 // Routes for Department Management
