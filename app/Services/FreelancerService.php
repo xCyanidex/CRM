@@ -79,12 +79,13 @@ class FreelancerService
     {
         // Retrieve user_id from the freelancer model
         $user_id = $freelancer->value('user_id');
+        $freelancer_id = $freelancer->value('id');
 
         // Retrieve the user ID associated with the freelancer
-        $id = $this->userRepository->getUserById($user_id)->value('id');
+        $id = $this->userRepository->findUserById($user_id)->value('id');
 
         // Delete the freelancer through the FreelancerRepository
-        $this->freelancerRepository->deleteFreelancer($freelancer);
+        $this->freelancerRepository->deleteFreelancer($freelancer_id);
 
         // Delete the user through the UserRepository
         $this->userRepository->deleteUser($id);
