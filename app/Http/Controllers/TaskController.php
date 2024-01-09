@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * TaskController handles HTTP requests related to tasks in the application.
+ *
+ * This controller interacts with the TaskService to perform actions such as
+ * retrieving, creating, updating, assigning, and deleting tasks. It also
+ * includes validation logic for incoming requests. The controller is responsible
+ * for handling the communication between the client and the application's
+ * task-related functionalities.
+ */
+
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
@@ -12,11 +22,16 @@ use Illuminate\Support\Facades\Validator;
 class TaskController extends Controller
 {
 
+    //Property to hold the TaskService instance
     protected $taskService;
+    
+    //injecting TaskService dependency
     public function __construct(TaskService $taskService)
     {   
         $this->taskService=$taskService;
     } 
+
+    // Retrieving all tasks
     public function ShowTask(){
         $task = $this->taskService->getAllTasks();
         if(!$task){
@@ -25,6 +40,8 @@ class TaskController extends Controller
             return response()->json(['tasks'=>$task]);
         }
     }
+
+    // Deleting Task by ID
     public function deleteTask(Request $request,$id){
         $task = $this->taskService->findById($id);
         if(!$task){
@@ -33,6 +50,8 @@ class TaskController extends Controller
             return $this->taskService->deleteTask($id);
         }        
     }
+
+    // Update Task by ID
     public function updateTask(Request $request,$id){
         $task=$this->taskService->findById($id);
         if(!$task){
@@ -42,31 +61,16 @@ class TaskController extends Controller
             return $this->taskService->updateTask($id,$data);
         }
     }  
+
+    // Create new task using TaskService
     public function createTask(Request $request){
         return $this->taskService->createTask($request->all());
     } 
+
+    // Assign Task
     public function assignTask(Request $request){
         return $this->taskService->assigntask($request->all());
     }
-
-//
-//     protected $employeeService;
-//     protected $taskService;
-//     public function __construct(EmployeeService $employeeService,TaskService $taskService)
-//     {   
-//         $this->employeeService=$employeeService;
-//         $this->taskService->$taskService;
-//     }
-
-//     public function assignTask(Request $request,$task_id){
-//         $validator = Validator::make($request->all(),[
-//             'assigned_to'=>'required | exists:employees,id',
-//         ]);
-
-//         $assigned_to=$request->input('assigned_to');
-//         $assigned_task = $this->taskService->assignTask($task_id,$assigned_to);
-//         return response()->json(['message'=>'Task assigned succcessfully','task'=>$assigned_task]);
-//     }
 
 
 
