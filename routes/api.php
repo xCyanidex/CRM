@@ -71,8 +71,8 @@ Route::middleware('auth:sanctum')->delete('/delete-department/{id}', [Department
 // Routes for Employee Management
 Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
     Route::prefix('employees')->middleware('auth:sanctum')->group(function () {
-        Route::get('/get-all', [EmployeeController::class, 'index']);
-        Route::post('/create', [EmployeeController::class, 'store']);
+        Route::get('/get-all', [EmployeeController::class, 'getAllEmployees']);
+        Route::post('/create', [EmployeeController::class, 'store']);   
         Route::post('/update/{id}', [EmployeeController::class, 'update']);
         Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
         Route::get('/get-user/{id}', [EmployeeController::class, 'show']);
@@ -81,18 +81,21 @@ Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
 
 
 
-// Middleware group that applies 'auth:sanctum' and 'role:employee' middleware to all routes within the group
-Route::middleware(['auth:sanctum', 'role:employee'])->group(function (){
+/** Middleware group that applies 'auth:sanctum' and 'role:employee' 
+ * middleware to all routes within the group.
+ * 
+ * POST route to create a new task, handled by the createTask method in TaskController.
+ * GET route to retrieve all tasks, handled by the getAllTasks method in TaskController.
+ * PUT route to update an existing task, handled by the updateTask method in TaskController.
+ * DELETE route to delete a task, handled by the deleteTask method in TaskController.
+ * POST route to assign a task, handled by the assignTask method in TaskController.
+ */
 
-    // POST route to create a new task, handled by the createTask method in TaskController
+Route::middleware(['auth:sanctum', 'role:employee'])->group(function (){
     Route::post('create-task',[TaskController::class,'createTask']);
-    // GET route to retrieve all tasks, handled by the getAllTasks method in TaskController
-    Route::get('show-task',[TaskController::class,'getAllTasks']);
-    // PUT route to update an existing task, handled by the updateTask method in TaskController
-    Route::put('update-task',[TaskController::class,'updateTask']);
-    // DELETE route to delete a task, handled by the deleteTask method in TaskController
-    Route::delete('delete-task',[TaskController::class,'deleteTask']);
-    // POST route to assign a task, handled by the assignTask method in TaskController
+    Route::get('show-task',[TaskController::class,'ShowTask']);
+    Route::put('update-task/{id}',[TaskController::class,'updateTask']);
+    Route::delete('delete-task/{id}',[TaskController::class,'deleteTask']);
     Route::post('assign-task',[TaskController::class,'assignTask']);
 });
 

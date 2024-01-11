@@ -26,7 +26,10 @@ class Employee extends Model
     public function department(){
         return $this->belongsTo(Department::class);
     }
+    // public function task(){
+    //     return $this->belongsToMany(Task::class,'assigned_to','assigned_by','task_id');
+    // }
     public function task(){
-        return $this->belongsToMany(Task::class,'assigned_to','assigned_by','task_id');
+        return $this->belongsToMany(Task::class)->withPivot('assigned_to','assigned_by','task_id')->withTimestamps();
     }
 }

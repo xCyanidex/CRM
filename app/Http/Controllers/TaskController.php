@@ -12,12 +12,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\Task;
 use App\Services\TaskService;
-use App\Services\EmployeeService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
@@ -25,49 +21,87 @@ class TaskController extends Controller
     //Property to hold the TaskService instance
     protected $taskService;
     
-    //injecting TaskService dependency
+    /**
+     * Constructor for the MyClass class.
+     *
+     * @param TaskService $taskService The TaskService instance to be injected.
+     *
+     * @return void
+    */
     public function __construct(TaskService $taskService)
     {   
         $this->taskService=$taskService;
     } 
 
-    // Retrieving all tasks
+    /**
+     * Show all tasks.
+     *
+     * This method retrieves all tasks using the TaskService and returns a JSON response.
+     * If an exception occurs during the process, it handles the exception by returning
+     * a JSON response with an error message and a 500 status code.
+     * No parameters are needed for this function.
+     * @return Returns a JSON response containing all tasks on success.
+     * On failure, returns a JSON response with an error message and 500 status code.
+     */
     public function ShowTask(){
-        $task = $this->taskService->getAllTasks();
-        if(!$task){
-            return response()->json(['message'=>'Task not found']);
-        }else{
-            return response()->json(['tasks'=>$task]);
+        try{
+            $task = $this->taskService->getAllTasks();
+            return response()->json(['tasks'=>$task],200);
+        }catch(\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],500);
         }
     }
 
-    // Deleting Task by ID
+    /**
+     * Delete specific task.
+     * This method deletes the task using the TaskService and returns a JSON response.
+     * @param Request $request and ID for the task to be deleted.
+     * @return JSON response for deleting the task.
+     * @return JSON response if an exception occurs during the process, it handles the exception
+     * by returning a 500 status code.
+     */
     public function deleteTask(Request $request,$id){
-        $task = $this->taskService->findById($id);
-        if(!$task){
-            return response()->json(['message'=>'task not found']);
-        }else{
-            return $this->taskService->deleteTask($id);
-        }        
+        try{
+            $task = $this->taskService->deleteTask($id);
+            return response()->json(['message'=>'Task has been deleted successfully','task'=>$task]);
+        }catch(\Exception $e){
+            return response()->json(['message'=>$e->getMessage()]);
+        }
     }
 
-    // Update Task by ID
-    public function updateTask(Request $request,$id){
-        $task=$this->taskService->findById($id);
-        if(!$task){
-            return response()->json(['message'=>'task not found']);
-        }else{
-            $data=$request->all();
-            return $this->taskService->updateTask($id,$data);
+    /**
+     * Update specific task.
+     * This method updates the task using the TaskService and returns a JSON response.
+     * @param Request $request and ID for the task to be updated.
+     * @return JSON response for updating the task.
+     * @return JSON response if an exception occurs during the process, it handles the exception
+     * by returning a 500 status code.
+     */
+    public function updateTask($id,Request $request){
+        try{
+            $task=$this->taskService->updateTask($id,$request->all());
+            return response()->json(['message'=>'task updated successfully','task'=>$task],200);
+        }catch(\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],500); 
         }
     }  
 
-    // Create new task using TaskService
+    /**
+     * Create specific task.
+     * This method creates the task using the TaskService and returns a JSON response.
+     * @param Request $request.
+     * @return creates a task using the TaskService.
+     */
     public function createTask(Request $request){
         return $this->taskService->createTask($request->all());
     } 
 
-    // Assign Task
+    /**
+     * Assigns specif task to specific employee.
+     * This method assigns the task to an employee using the TaskService and returns a JSON repsonse.
+     * @param Request $request.
+     * @return assigns a task using the TaskService.
+     */
     public function assignTask(Request $request){
         return $this->taskService->assigntask($request->all());
     }

@@ -19,8 +19,8 @@ class ProductOwnerSeeder extends Seeder
     public function run(): void
     {
         $user =  User::create([
-            'username' => 'ryan01',
-            'email' => 'mohammadryanchahour@gmail.com',
+            'username' => 'arsalan07',
+            'email' => 'marsalan828@gmail.com',
             'password' => Hash::make('password'),
             
         ]);
