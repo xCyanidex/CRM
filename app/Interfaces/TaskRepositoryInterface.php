@@ -1,23 +1,60 @@
 <?php
 
 /**
- * TaskRepositoryInterface defines the contract for task-related repository operations.
+ * TaskRepositoryInterface
+ * 
+ * This interface defines the contract for repository classes that handle database operations
+ * related to the Task model. Classes implementing this interface are expected to provide
+ * implementations for methods such as creating, retrieving, updating, deleting and assigning Tasks.
  *
- * This interface outlines the methods that any class implementing it should provide.
- * These methods cover common CRUD operations (create, read, update, delete) for tasks,
- * as well as assigning tasks and retrieving all tasks. Additionally, there's a commented-out
- * method for completing a task, indicating a potential future addition.
+ * @category Interface
+ * @package  App\Interfaces
  */
 
 namespace App\Interfaces;
 
 use Illuminate\Http\Request;
  
-// Task interface for CRUD and Assigning Tasks
+// Task interface for CRUD and Assigning Tasks.
 interface TaskRepositoryInterface{
+    
+    
+    /**
+     * Create a new Task
+     *
+     * @param  array  $data  Data for creating a new task
+     */
     public function createTask(array $data);
+    
+    
+    /**
+     * Update a task.
+     *
+     * @param  array  $data  Data for creating a new task using $id.
+     */
     public function updateTask($id,array $data);
+
+
+    /**
+     * Delete a Task.
+     *
+     * @param  array  $id for deleting a task.
+     */
     public function deleteTask($id);
+
+
+    /**
+     * Retrieve all Tasks.
+     *
+     * No params required.
+     */
     public function getAllTasks();
+
+
+    /**
+     * Assign a Task
+     *
+     * @param  array  $data  Data for assigning a task to employee
+     */
     public function assignTask(array $data);    
 }
