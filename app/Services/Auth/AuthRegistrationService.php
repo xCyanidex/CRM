@@ -79,7 +79,8 @@ class AuthRegistrationService
 
                     $companyAdminPermissions = [
                         'create department', 'view department', 'update department', 'delete department',
-                        'create employee', 'view employee', 'update employee', 'delete employee',
+                        'create employee', 'view employee', 'update employee', 'delete employee', 'create task',
+                        'view task', 'update task', 'delete task', 'assign task',
                         
                     ];
 
