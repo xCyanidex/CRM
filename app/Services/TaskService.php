@@ -129,12 +129,19 @@ class TaskService {
     */
     public function assigntask(array $data){
         
-        return $this->taskRepository->assignTask([
-            'assigned_to'=>$data['assigned_to'],
-            'assigned_by'=>$data['assigned_by'],
-            'task_id'=>$data['task_id']
-        ]);
+        return $this->taskRepository->assignTask($data);
 
+    }
+
+
+    /**
+    * Mark a task as completed using the taskRepository.
+    *
+    * @param int $id - The ID of the task to be marked as completed.
+    * @return bool - True if the task is successfully marked as completed, false otherwise.
+    */
+    public function completeTask($id){
+        return $this->taskRepository->completeTask($id);
     }
    
 }

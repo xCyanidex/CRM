@@ -56,6 +56,7 @@ class Employee extends Model
      */
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'assigned_to', 'assigned_by', 'task_id');
+        return $this->belongsToMany(Task::class)->withPivot('assigned_to', 'assigned_by', 'task_id')->withTimestamps();
     }
+   
 }

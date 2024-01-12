@@ -5,7 +5,8 @@
  * 
  * This interface defines the contract for repository classes that handle database operations
  * related to the Task model. Classes implementing this interface are expected to provide
- * implementations for methods such as creating, retrieving, updating, deleting and assigning Tasks.
+ * implementations for methods such as creating, retrieving, updating, deleting, assigning and 
+ * completion of Tasks.
  *
  * @category Interface
  * @package  App\Interfaces
@@ -56,5 +57,13 @@ interface TaskRepositoryInterface{
      *
      * @param  array  $data  Data for assigning a task to employee
      */
-    public function assignTask(array $data);    
+    public function assignTask(array $data); 
+    
+    
+    /**
+     * Assign a Task
+     *
+     * @param  array  $id  id for completing a task from employee
+     */
+    public function completeTask($id);
 }

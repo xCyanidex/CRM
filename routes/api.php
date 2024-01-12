@@ -111,14 +111,16 @@ Route::middleware(['auth:sanctum', 'role:company-admin'])->group(function (){
  * PUT route to update an existing task, handled by the updateTask method in TaskController.
  * DELETE route to delete a task, handled by the deleteTask method in TaskController.
  * POST route to assign a task, handled by the assignTask method in TaskController.
+ * POST route to complete a task, handled by the completeTask method in TaskController.
  */
 
 Route::middleware(['auth:sanctum', 'role:employee'])->group(function (){
-    Route::post('create-task',[TaskController::class,'createTask']);
-    Route::get('show-task',[TaskController::class,'ShowTask']);
-    Route::put('update-task/{id}',[TaskController::class,'updateTask']);
-    Route::delete('delete-task/{id}',[TaskController::class,'deleteTask']);
-    Route::post('assign-task',[TaskController::class,'assignTask']);
+    Route::post('/create-task',[TaskController::class,'createTask']);
+    Route::get('/show-task',[TaskController::class,'ShowTask']);
+    Route::put('/update-task/{id}',[TaskController::class,'updateTask']);
+    Route::delete('/delete-task/{id}',[TaskController::class,'deleteTask']);
+    Route::post('/assign-task',[TaskController::class,'assignTask']);
+    Route::post('/complete-task/{id}',[TaskController::class,'completeTask']);
 });
 
 

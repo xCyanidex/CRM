@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->string('description');
             $table->date('start_time');
             $table->date('end_time');
+            $table->enum('status',['unassigned','pending','completed']);
             $table->timestamps();
         });
     }
